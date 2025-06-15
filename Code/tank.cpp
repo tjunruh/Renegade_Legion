@@ -292,7 +292,7 @@ int tank::apply_damage(const std::string& side, int column, const std::vector<we
 	int status = INVALID_VALUE;
 	if (std::count(valid_side_names.begin(), valid_side_names.end(), side) != 0 && column >= 0 && column <= ARMOR_COLUMNS_PER_SIDE)
 	{
-
+		status = SUCCESS;
 		if (side == "turret")
 		{
 			apply_turret_damage(column, damage);
@@ -317,7 +317,13 @@ int tank::apply_damage(const std::string& side, int column, const std::vector<we
 		{
 			apply_bottom_damage(column, damage);
 		}
+		else
+		{
+			status = INVALID_VALUE;
+		}
 	}
+
+	return status;
 }
 
 std::string tank::get_name()
@@ -483,7 +489,7 @@ void tank::apply_turret_damage(int column, const std::vector<weapons::damage_coo
 				}
 				else if ((damage_row - ARMOR_ROWS_PER_SIDE) < ROWS_IN_INTERNALS)
 				{
-					total_damage.internal[damage_row - ARMOR_ROWS_PER_SIDE][column];
+					total_damage.internal[damage_row - ARMOR_ROWS_PER_SIDE][column] = damaged;
 				}
 			}
 		}

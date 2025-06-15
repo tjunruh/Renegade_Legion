@@ -1,0 +1,184 @@
+#pragma once
+#include <string>
+#include <vector>
+#include <unordered_map>
+
+#ifdef _WIN32
+#ifdef FORMAT_TOOLS_EXPORTS
+#define FORMAT_TOOLS_API __declspec(dllexport)
+#else
+#define FORMAT_TOOLS_API __declspec(dllimport)
+#endif
+#elif __linux__
+#define FORMAT_TOOLS_API
+#endif
+
+namespace format_tools
+{
+
+#ifdef _WIN32
+	const int black = 30;
+	const int red = 31;
+	const int green = 32;
+	const int yellow = 33;
+	const int blue = 34;
+	const int magenta = 35;
+	const int cyan = 36;
+	const int white = 37;
+	const int none = 38;
+#elif __linux__
+	const int black = 0;
+	const int red = 1;
+	const int green = 2;
+	const int yellow = 3;
+	const int blue = 4;
+	const int magenta = 5;
+	const int cyan = 6;
+	const int white = 7;
+	const int none = 8;
+#endif
+	const std::vector<int> colors = { black, red, green, yellow, blue, magenta, cyan, white };
+	const std::vector<char> invalid_characters = { '\n', '\a', '\b', '\f', '\r', '\t', '\v', '\0' };
+
+	struct common_format
+	{
+		int foreground_format = none;
+		int background_format = none;
+		bool bold = false;
+		bool dec = false;
+	};
+
+	struct index_format
+	{
+		int index = 0;
+		common_format format;
+		char flag_replacement = ' ';
+	};
+
+	struct index_format_sorting_functor
+	{
+		bool operator()(const index_format& format_1, const index_format& format_2)
+		{
+			return format_1.index < format_2.index;
+		}
+	};
+
+	struct content_format
+	{
+		std::string content = "";
+		common_format format;
+	};
+
+	struct coordinate_format
+	{
+		int x_position = 0;
+		int y_position = 0;
+		common_format format;
+	};
+
+	struct coordinate_format_sorting_functor
+	{
+		bool operator()(const coordinate_format& format_1, const coordinate_format& format_2)
+		{
+			if (format_1.y_position < format_2.y_position || (format_1.y_position == format_2.y_position && format_1.x_position < format_2.x_position))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	};
+
+	struct text_column
+	{
+		std::vector<std::vector<std::string>> text;
+		std::vector<unsigned int> width;
+	};
+
+	struct color_string
+	{
+		int color = none;
+		std::string name = "";
+	};
+
+	const std::vector<color_string> color_string_map =
+	{
+		{black, "Black"},
+		{red, "Red"},
+		{green, "Green"},
+		{yellow, "Yellow"},
+		{blue, "Blue"},
+		{magenta, "Magenta"},
+		{cyan, "Cyan"},
+		{white, "White"},
+		{none, "None"}
+	};
+
+	const std::unordered_map<std::string, int> foreground_color_tags =
+	{
+		{"<black_foreground>", format_tools::black},
+		{"<red_foreground>", format_tools::red},
+		{"<green_foreground>", format_tools::green},
+		{"<yellow_foreground>", format_tools::yellow},
+		{"<blue_foreground>", format_tools::blue},
+		{"<magenta_foreground>", format_tools::magenta},
+		{"<cyan_foreground>", format_tools::cyan},
+		{"<white_foreground>", format_tools::white},
+		{"<no_color>", format_tools::none}
+	};
+
+	const std::unordered_map<std::string, int> background_color_tags =
+	{
+		{"<black_background>", format_tools::black},
+		{"<red_background>", format_tools::red},
+		{"<green_background>", format_tools::green},
+		{"<yellow_background>", format_tools::yellow},
+		{"<blue_background>", format_tools::blue},
+		{"<magenta_background>", format_tools::magenta},
+		{"<cyan_background>", format_tools::cyan},
+		{"<white_background>", format_tools::white},
+		{"<no_color>", format_tools::none}
+	};
+
+	const std::string right_alignment_keyword = "right";
+	const std::string left_alignment_keyword = "left";
+	const std::string center_alignment_keyword = "center";
+	const std::string center_block_alignment_keyword = "center block";
+	FORMAT_TOOLS_API std::vector<std::string> split_string(std::string str, char split_character);
+	FORMAT_TOOLS_API void cut_word(const std::string& word, unsigned int length, std::string& first_section, std::string& second_section);
+	FORMAT_TOOLS_API std::string get_spacing(unsigned int length, char space_char);
+	FORMAT_TOOLS_API std::string fill_line(std::string input, unsigned int length, std::string alignment);
+	FORMAT_TOOLS_API std::vector<std::string> fill_lines(std::vector<std::string> input, unsigned int length, std::string alignment);
+	FORMAT_TOOLS_API std::vector<std::string> add_lines(std::vector<std::string> lines, unsigned int number_of_added_lines, unsigned int line_length);
+	FORMAT_TOOLS_API std::string fuse_columns_into_row(text_column data, unsigned int& lines);
+	FORMAT_TOOLS_API std::vector<std::string> get_lines(const std::string& output_string);
+	FORMAT_TOOLS_API std::vector<std::string> get_lines(const std::string& content, unsigned int width, unsigned int current_position=0);
+	FORMAT_TOOLS_API std::string get_string(const std::vector<std::string>& lines);
+	FORMAT_TOOLS_API std::vector<std::string> remove_trailing_whitespace(const std::vector<std::string>& lines);
+	FORMAT_TOOLS_API void mask_string(std::string& new_string, const std::string& old_string);
+	FORMAT_TOOLS_API void remove_newline_characters(std::string& text);
+	FORMAT_TOOLS_API int calculate_flag_number(const std::vector<index_format>& index_colors, int index);
+	FORMAT_TOOLS_API bool index_found(const std::vector<index_format>& index_colors, int index);
+	FORMAT_TOOLS_API std::vector<index_format> combine(const std::vector<index_format>& format_1, const std::vector<index_format>& format_2);
+	FORMAT_TOOLS_API bool present(const std::vector<index_format>& main_format, const std::vector<index_format>& check_format);
+	FORMAT_TOOLS_API std::vector<content_format> convert(std::vector<index_format> index_vec, const std::string& content);
+	FORMAT_TOOLS_API std::vector<index_format> convert(std::vector<coordinate_format> coordinate_vec, int width);
+	FORMAT_TOOLS_API std::vector<coordinate_format> convert(const std::vector<index_format>& index_vec, const std::vector<std::string>& lines);
+	FORMAT_TOOLS_API std::vector<int> set_flags(std::vector<index_format>& index_colors, std::string& content, char flag);
+	FORMAT_TOOLS_API std::vector<std::string> remove_flags(const std::vector<index_format>& index_colors, std::vector<int> ignore_flags, std::vector<std::string> lines, char flag);
+	FORMAT_TOOLS_API void convert_flags(std::vector<coordinate_format>& coordinate_colors, const std::vector<index_format>& index_colors, std::vector<int> ignore_flags, std::vector<std::string>& lines, char flag);
+	FORMAT_TOOLS_API std::vector<content_format> fit_to_width(const std::vector<content_format>& content_vec, unsigned int width);
+	FORMAT_TOOLS_API std::vector<std::string> remove_newline_characters(std::vector<std::string> lines);
+	FORMAT_TOOLS_API std::vector<std::string> add_newline_characters(std::vector<std::string> lines);
+	FORMAT_TOOLS_API unsigned int get_first_line_length(const std::string& content);
+	FORMAT_TOOLS_API std::string get_color_name(int color);
+	FORMAT_TOOLS_API std::vector<index_format> shift_index(std::vector<index_format> index_colors, int shift_amount);
+	FORMAT_TOOLS_API std::vector<coordinate_format> bound_colors(std::vector<coordinate_format> colors, const std::vector<std::string>& lines);
+	FORMAT_TOOLS_API std::vector<index_format> build_color_for_value(const std::string& value, char ignore_character, int foreground_format, int background_format, bool bold, bool include_spaces = false);
+	FORMAT_TOOLS_API bool format_empty(const common_format& format);
+	FORMAT_TOOLS_API unsigned int compress(unsigned int value, unsigned int compression, unsigned int& remainder);
+	FORMAT_TOOLS_API unsigned int expand(unsigned int value, unsigned int expansion, unsigned int remainder);
+	FORMAT_TOOLS_API std::vector<format_tools::index_format> convert_color_tags(std::string& content);
+}

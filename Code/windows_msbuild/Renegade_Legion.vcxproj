@@ -151,12 +151,18 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\display.cpp" />
+    <ClCompile Include="..\game_operations.cpp" />
+    <ClCompile Include="..\logic.cpp" />
     <ClCompile Include="..\Renegade_Legion.cpp" />
     <ClCompile Include="..\tank.cpp" />
     <ClCompile Include="..\weapons.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\damage_code.h" />
+    <ClInclude Include="..\display.h" />
+    <ClInclude Include="..\game_operations.h" />
+    <ClInclude Include="..\logic.h" />
     <ClInclude Include="..\tank.h" />
     <ClInclude Include="..\weapons.h" />
   </ItemGroup>

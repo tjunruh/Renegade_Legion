@@ -1,6 +1,7 @@
 #include "display.h"
 #include <ascii_engine/ascii_io.h>
 #include <ascii_engine/file_manager.h>
+#include <ascii_engine/format_tools.h>
 #include "damage_code.h"
 #include <time.h>
 #include <thread>
@@ -91,6 +92,7 @@ void display::display_tank_stats(tank& tank_data)
 {
 	ascii_io::zoom_to_level(-3);
 	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+	tank_stats.clear_all();
 	tank_stats.set_tile(22, 0, tank_data.get_name());
 	tank_stats.set_tile(22, 1, std::to_string(tank_data.get_number()));
 	tank_stats.set_tile(23, 0, std::to_string(tank_data.get_stern_shield_factor()));
@@ -112,13 +114,15 @@ void display::display_tank_stats(tank& tank_data)
 	}
 
 	std::vector<tank::weapon_entry> weapons = tank_data.get_weapons();
-	for (unsigned int i = 0; i < weapons.size(); i = i + 4)
+	for (unsigned int i = 0; i < weapons.size(); i++)
 	{
-		tank_stats.set_tile(27, i, weapons[i].name);
-		tank_stats.set_tile(27, i + 1, weapons[i].location);
-		tank_stats.set_tile(27, i + 2, weapons[i].damage);
-		tank_stats.set_tile(27, i + 3, weapons[i].range);
+		tank_stats.set_tile(27, i * 4, weapons[i].name);
+		tank_stats.set_tile(27, i * 4 + 1, weapons[i].location);
+		tank_stats.set_tile(27, i * 4 + 2, weapons[i].damage);
+		tank_stats.set_tile(27, i * 4 + 3, weapons[i].range);
 	}
+
+	tank_stats.set_tile(26, 12, format_tools::get_spacing(62, ' ') + "\n" + format_tools::fill_line(std::to_string(tank_data.get_max_thrust()), 31, "center"));
 
 	tank_stats.set_tile(28, 0, tank_data.get_fire_modifiers());
 	

@@ -138,6 +138,7 @@ int tank::add_weapon(const std::string& name, const std::string& location, const
 		weapon.location = location;
 		weapon.damage = damage;
 		weapon.range = range;
+		weapon_entries.push_back(weapon);
 		status = SUCCESS;
 	}
 

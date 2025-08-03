@@ -371,7 +371,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 	{
 		faction_input.append_item("Mercenary");
 	}
-	faction_input.set_cursor_item(0);
+	faction_input.set_cursor_index(0);
 	faction_input.build();
 
 	budget_data.set_output("Available budget: " + std::to_string(budget));
@@ -384,7 +384,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 		if (tank_templates[i].get_faction() == faction)
 		{
 			tank_selection_input.append_item(tank_templates[i].get_name());
-			tank_selection_input.set_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
+			tank_selection_input.append_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
 			tank_selection_input.build();
 		}
 	}
@@ -416,7 +416,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 						for (unsigned int i = 0; i < tank_templates.size(); i++)
 						{
 							tank_selection_input.append_item(tank_templates[i].get_name());
-							tank_selection_input.set_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
+							tank_selection_input.append_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
 						}
 
 						tank_fleet_setup_decal.set_output(mercenary_symbol);
@@ -428,7 +428,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 							if (tank_templates[i].get_faction() == faction)
 							{
 								tank_selection_input.append_item(tank_templates[i].get_name());
-								tank_selection_input.set_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
+								tank_selection_input.append_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
 							}
 						}
 						owned_tank_input.remove_all_items();
@@ -463,7 +463,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 							{
 								fleet_cost_data.set_output(std::to_string(fleet_cost));
 								int status = owned_tank_input.append_item(tank_templates[i].get_name());
-								owned_tank_input.set_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
+								owned_tank_input.append_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
 								owned_tank_input.build();
 							}
 						}
@@ -681,7 +681,7 @@ void display::setup_scenario_setup()
 	finalize_scenario_setup.set_alignment("center");
 	finalize_scenario_setup.set_output("Finalize");
 	finalize_scenario_setup.add_border(true);
-	finalize_scenario_setup.selectable();
+	finalize_scenario_setup.set_selectable(true);
 
 	scenario_setup_decal.set_spacing(1, 0, 5, 10);
 	scenario_setup_decal.enable_word_wrap(false);
@@ -717,7 +717,7 @@ void display::setup_tank_fleet_setup()
 
 	tank_selection_input.set_spacing(0, 0, 5, 10);
 	tank_selection_input.add_border(true);
-	tank_selection_input.set_controls({ ascii_io::enter, ascii_io::v, ascii_io::s }, ascii_io::up, ascii_io::down, ascii_io::q);
+	tank_selection_input.set_controls({ ascii_io::enter, ascii_io::v, ascii_io::s }, ascii_io::up, ascii_io::down, ascii_io::left, ascii_io::right, ascii_io::q);
 
 	owned_tank_prompt.set_spacing(2, 0, 5, 10);
 	owned_tank_prompt.set_alignment("center");
@@ -725,7 +725,7 @@ void display::setup_tank_fleet_setup()
 
 	owned_tank_input.set_spacing(0, 0, 5, 10);
 	owned_tank_input.add_border(true);
-	owned_tank_input.set_controls({ ascii_io::DEL, ascii_io::v, ascii_io::s }, ascii_io::up, ascii_io::down, ascii_io::q);
+	owned_tank_input.set_controls({ ascii_io::DEL, ascii_io::v, ascii_io::s }, ascii_io::up, ascii_io::down, ascii_io::left, ascii_io::right, ascii_io::q);
 
 	budget_data.set_spacing(1, 0, 5, 10);
 
@@ -736,7 +736,7 @@ void display::setup_tank_fleet_setup()
 	finalize_fleet_setup.add_border(true);
 	finalize_fleet_setup.set_alignment("center");
 	finalize_fleet_setup.set_output("Finalize");
-	finalize_fleet_setup.selectable();
+	finalize_fleet_setup.set_selectable(true);
 }
 
 bool display::is_number(const std::string& number_string)

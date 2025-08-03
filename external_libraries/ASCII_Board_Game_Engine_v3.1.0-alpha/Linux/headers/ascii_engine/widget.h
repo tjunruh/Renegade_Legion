@@ -31,9 +31,7 @@ public:
 	WIDGET_API void set_border_spacing_width_multipliers(float left_multiplier, float right_multiplier);
 	WIDGET_API void add_border(bool border);
 	WIDGET_API void use_spacing_width_multipliers(bool use);
-	WIDGET_API void refresh();
-	WIDGET_API void selectable();
-	WIDGET_API void unselectable();
+	WIDGET_API void set_selectable(bool selectable);
 	WIDGET_API bool is_selectable();
 	WIDGET_API void get_spacing(int& top, int& bottom, int& left, int& right);
 	WIDGET_API void get_border_spacing(int& top, int& bottom, int& left, int& right);
@@ -55,7 +53,7 @@ public:
 	WIDGET_API int start_logging(const std::string& file_path);
 	WIDGET_API void stop_logging();
 	WIDGET_API int reset_logging(const std::string& file_path);
-	operator int() { return widget_id; }
+	operator int() { return item.id; }
 protected:
 	void set_output_to_frame(const std::string& text, bool mark_stale = true);
 	void set_widget_type(int type);
@@ -88,6 +86,7 @@ protected:
 	unsigned int get_top_line();
 	unsigned int get_left_column();
 	unsigned int get_lines_count(bool only_displayed = true);
+	unsigned int get_columns_count();
 	void set_line_character(char character, unsigned int line, unsigned int character_index);
 	void update_lines();
 	unsigned int get_line_length(unsigned int line);
@@ -96,6 +95,7 @@ protected:
 	unsigned int get_output_length();
 	void dynamically_adjust_displayed_lines();
 	void bound_top_line();
+	void display_entire_frame();
 
 #ifdef __linux__
 	void dec_print(const std::string& input);
@@ -103,6 +103,5 @@ protected:
 	logger log;
 private:
 	frame *parent_frame;
-	int widget_id;
-	int widget_type = WIDGET;
+	frame::widget_info item;
 };

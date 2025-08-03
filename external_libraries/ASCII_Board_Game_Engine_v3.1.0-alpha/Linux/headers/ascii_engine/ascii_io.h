@@ -16,6 +16,7 @@ namespace ascii_io
 {
 	ASCII_IO_API void print(const std::string& output);
 	ASCII_IO_API int getchar();
+	ASCII_IO_API int wait_for_keystroke(std::vector<int> keystroke_options);
 	ASCII_IO_API void clear();
 	ASCII_IO_API void get_terminal_size(int& x, int& y);
 	ASCII_IO_API void get_cursor_position(int& x, int& y);
@@ -26,9 +27,9 @@ namespace ascii_io
 	ASCII_IO_API void move_cursor_right(unsigned int amount=1);
 	ASCII_IO_API void move_cursor_left(unsigned int amount=1);
 	ASCII_IO_API void move_cursor_to_position(unsigned int x, unsigned int y);
-	ASCII_IO_API int zoom_in(unsigned int amount=1);
-	ASCII_IO_API int zoom_out(unsigned int amount = 1);
-	ASCII_IO_API int zoom_to_level(int level);
+	ASCII_IO_API int zoom_in(unsigned int amount=1, unsigned int wait_milliseconds = 0);
+	ASCII_IO_API int zoom_out(unsigned int amount = 1, unsigned int wait_milliseconds = 0);
+	ASCII_IO_API int zoom_to_level(int level, unsigned int wait_milliseconds = 0);
 	ASCII_IO_API void set_color(int foreground, int background, bool bold = false);
 	ASCII_IO_API std::string get_key_name(int key);
 	ASCII_IO_API void ascii_engine_init(bool maximize=false);
@@ -46,6 +47,7 @@ namespace ascii_io
    void ncurses_end();
    void initialize_colors();
    int get_color_id(int foreground, int background);
+   void guarantee_clear_on_next_display();
 #endif
 
 	const int undefined = -1;

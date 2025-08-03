@@ -7,36 +7,73 @@
 #include <thread>
 #include <chrono>
 
-display::display(frame* tank_view_display, frame* tank_damage_display) :
+display::display(frame* tank_view_display, frame* tank_damage_display, frame* scenario_setup_display, frame* tank_fleet_setup_display) :
 	tank_image_one(tank_view_display),
 	tank_image_two(tank_view_display),
-	tank_stats(tank_damage_display, "board_configs/damage_record_template_config.txt", "default")
+
+	tank_stats(tank_damage_display, "board_configs/damage_record_template_config.txt", "default"),
+
+	player_number_prompt(scenario_setup_display),
+	player_number_input(scenario_setup_display, "merge", 3),
+	budget_prompt(scenario_setup_display, "merge"),
+	budget_input(scenario_setup_display, "merge", 3),
+	faction_mixing_prompt(scenario_setup_display, "merge"),
+	faction_mixing_input(scenario_setup_display, "merge", 2),
+	scenario_setup_spacer(scenario_setup_display, "merge", -35),
+	finalize_scenario_setup(scenario_setup_display, "merge", 1),
+	scenario_setup_decal(scenario_setup_display, "none", -2),
+
+	player_name_prompt(tank_fleet_setup_display, "none", 1),
+	player_name_input(tank_fleet_setup_display, "merge", 3),
+	faction_prompt(tank_fleet_setup_display, "merge", 1),
+	faction_input(tank_fleet_setup_display, "merge", 3),
+	tank_fleet_setup_decal(tank_fleet_setup_display, "merge", -20),
+	tank_selection_prompt(tank_fleet_setup_display, "none", 1),
+	tank_selection_input(tank_fleet_setup_display, "merge", 9),
+	owned_tank_prompt(tank_fleet_setup_display, "merge", 1),
+	owned_tank_input(tank_fleet_setup_display, "merge", 9),
+	budget_data(tank_fleet_setup_display, "merge", 1),
+	fleet_cost_data(tank_fleet_setup_display, "merge", 1),
+	tank_fleet_setup_spacer(tank_fleet_setup_display, "merge", -37),
+	finalize_fleet_setup(tank_fleet_setup_display, "merge", 1)
 {
 	tank_view_frame = tank_view_display;
 	tank_damage_frame = tank_damage_display;
-	
-	tank_image_one.set_alignment("center block");
-	tank_image_one.enable_word_wrap(false);
-	tank_image_two.set_alignment("center block");
-	tank_image_two.enable_word_wrap(false);
+	scenario_setup_frame = scenario_setup_display;
+	tank_fleet_setup_frame = tank_fleet_setup_display;
 
-	tank_damage_frame->enable_dec(true);
-	tank_damage_frame->enable_color(true);
-	tank_stats.set_alignment("center block");
-	
-	std::vector<format_tools::index_format> colors;
-	format_tools::index_format color;
-	color.index = 0;
-	color.format.background_format = format_tools::red;
-	colors.push_back(color);
+	setup_tank_view();
+	setup_tank_stats();
+	setup_scenario_setup();
+	setup_tank_fleet_setup();
+}
 
-	tank_stats.add_configuration(build_damage_config("damaged", "   ", '*', colors));
-	color.format.background_format = format_tools::white;
-	colors.clear();
-	colors.push_back(color);
-	tank_stats.add_configuration(build_damage_config("missing", "   ", '*', colors));
+void display::display_tank_view(const std::string& tank_name, const std::string& tank_side)
+{
+	ascii_io::zoom_to_level(-7);
+	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+	for (unsigned int i = 0; i < tank_views.size(); i++)
+	{
+		if (tank_views[i].name == tank_name)
+		{
+			if (tank_side == "top")
+			{
+				tank_image_one.set_output(tank_views[i].top_view);
+			}
+			else if (tank_side == "left")
+			{
+				tank_image_one.set_output(tank_views[i].left_view);
+			}
+			else if (tank_side == "right")
+			{
+				tank_image_one.set_output(tank_views[i].right_view);
+			}
 
-	create_tank_views();
+			break;
+		}
+	}
+
+	tank_view_frame->display();
 }
 
 void display::display_tank_view(const std::string& tank_one_name, const std::string& tank_one_side, const std::string& tank_two_name, const std::string& tank_two_side)
@@ -122,7 +159,7 @@ void display::display_tank_stats(tank& tank_data)
 		tank_stats.set_tile(27, i * 4 + 3, weapons[i].range);
 	}
 
-	tank_stats.set_tile(26, 12, format_tools::get_spacing(62, ' ') + "\n" + format_tools::fill_line(std::to_string(tank_data.get_max_thrust()), 31, "center"));
+	tank_stats.set_tile(26, 12, format_tools::get_spacing(62, ' ') + format_tools::fill_line(std::to_string(tank_data.get_max_thrust()), 31, "center"));
 
 	tank_stats.set_tile(28, 0, tank_data.get_fire_modifiers());
 	
@@ -275,6 +312,228 @@ void display::display_tank_stats(tank& tank_data)
 	tank_damage_frame->display();
 }
 
+void display::display_scenario_setup(unsigned int& number_of_players, int& budget, bool& faction_mixing_allowed)
+{
+	ascii_io::zoom_to_level(-1);
+	int selection = -1;
+	std::string raw_number_of_players = "2";
+	std::string raw_budget = "500000";
+	std::string raw_faction_mixing_allowed = "Yes";
+	int key_stroke = ascii_io::undefined;
+	scenario_setup_frame->display();
+	do
+	{
+		selection = scenario_setup_frame->get_selection();
+		if (selection == player_number_input)
+		{
+			player_number_input.get_selection(raw_number_of_players, key_stroke);
+		}
+		else if (selection == budget_input)
+		{
+			budget_input.get_selection(raw_budget, key_stroke);
+		}
+		else if (selection == faction_mixing_input)
+		{
+			faction_mixing_input.get_selection(raw_faction_mixing_allowed, key_stroke);
+		}
+
+	} while (selection != finalize_scenario_setup);
+
+	number_of_players = stoi(raw_number_of_players);
+	budget = stoi(raw_budget);
+	if (raw_faction_mixing_allowed == "Yes")
+	{
+		faction_mixing_allowed = true;
+	}
+	else if (raw_faction_mixing_allowed == "No")
+	{
+		faction_mixing_allowed = false;
+	}
+}
+
+void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, std::vector<tank>& tank_templates, std::string& player_name, std::string& faction, std::vector<tank>& tank_fleet)
+{
+	ascii_io::zoom_to_level(0);
+	faction = "Renegade";
+	std::string tog_symbol = "";
+	std::string renegade_symbol = "";
+	std::string mercenary_symbol = "";
+	file_manager::read_file("text_images/Renegade_Symbol.txt", renegade_symbol);
+	file_manager::read_file("text_images/TOG_Symbol.txt", tog_symbol);
+	file_manager::read_file("text_images/Mercenary_Symbol.txt", mercenary_symbol);
+	tank_fleet_setup_decal.set_output(renegade_symbol);
+	ascii_io::zoom_to_level(-1);
+	fleet_cost_data.set_output("0");
+	faction_input.remove_all_items();
+	faction_input.append_item("Renegade");
+	faction_input.append_item("TOG");
+	if (faction_mixing_allowed)
+	{
+		faction_input.append_item("Mercenary");
+	}
+	faction_input.set_cursor_item(0);
+	faction_input.build();
+
+	budget_data.set_output("Available budget: " + std::to_string(budget));
+
+	owned_tank_input.remove_all_items();
+	tank_selection_input.remove_all_items();
+
+	for (unsigned int i = 0; i < tank_templates.size(); i++)
+	{
+		if (tank_templates[i].get_faction() == faction)
+		{
+			tank_selection_input.append_item(tank_templates[i].get_name());
+			tank_selection_input.set_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
+			tank_selection_input.build();
+		}
+	}
+
+	int selection = -1;
+	bool valid_inputs = false;
+	int key_stroke = ascii_io::undefined;
+
+	while (!valid_inputs)
+	{
+		do
+		{
+			selection = tank_fleet_setup_frame->get_selection();
+			if (selection == player_name_input)
+			{
+				player_name_input.write();
+				ascii_io::hide_cursor();
+				player_name = player_name_input.get_text();
+			}
+			else if (selection == faction_input)
+			{
+				std::string previous_faction = faction;
+				faction_input.get_selection(faction, key_stroke);
+				if (faction != previous_faction)
+				{
+					tank_selection_input.remove_all_items();
+					if (faction == "Mercenary")
+					{
+						for (unsigned int i = 0; i < tank_templates.size(); i++)
+						{
+							tank_selection_input.append_item(tank_templates[i].get_name());
+							tank_selection_input.set_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
+						}
+
+						tank_fleet_setup_decal.set_output(mercenary_symbol);
+					}
+					else
+					{
+						for (unsigned int i = 0; i < tank_templates.size(); i++)
+						{
+							if (tank_templates[i].get_faction() == faction)
+							{
+								tank_selection_input.append_item(tank_templates[i].get_name());
+								tank_selection_input.set_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
+							}
+						}
+						owned_tank_input.remove_all_items();
+						owned_tank_input.build();
+						fleet_cost_data.set_output("0");
+
+						if (faction == "Renegade")
+						{
+							tank_fleet_setup_decal.set_output(renegade_symbol);
+						}
+						else if (faction == "TOG")
+						{
+							tank_fleet_setup_decal.set_output(tog_symbol);
+						}
+					}
+					tank_selection_input.build();
+				}
+			}
+			else if (selection == tank_selection_input)
+			{
+				std::string tank_selection = "";
+				tank_selection_input.get_selection(tank_selection, key_stroke);
+				if (key_stroke == ascii_io::enter)
+				{
+					for (unsigned int i = 0; i < tank_templates.size(); i++)
+					{
+						if (tank_templates[i].get_name() == tank_selection)
+						{
+							std::string budget_string = fleet_cost_data.get_output();
+							int fleet_cost = stoi(budget_string) + tank_templates[i].get_cost();
+							if (fleet_cost < budget)
+							{
+								fleet_cost_data.set_output(std::to_string(fleet_cost));
+								int status = owned_tank_input.append_item(tank_templates[i].get_name());
+								owned_tank_input.set_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
+								owned_tank_input.build();
+							}
+						}
+					}
+				}
+				else if (key_stroke == ascii_io::v)
+				{
+					display_tank_view(tank_selection, "top");
+					ascii_io::getchar();
+					ascii_io::zoom_to_level(-1);
+				}
+				else if (key_stroke == ascii_io::s)
+				{
+					for (unsigned int i = 0; i < tank_templates.size(); i++)
+					{
+						if (tank_templates[i].get_name() == tank_selection)
+						{
+							display_tank_stats(tank_templates[i]);
+							ascii_io::getchar();
+							ascii_io::zoom_to_level(-1);
+						}
+					}
+				}
+			}
+			else if (selection == owned_tank_input)
+			{
+				std::string tank_selection = "";
+				owned_tank_input.get_selection(tank_selection, key_stroke);
+				if (key_stroke == ascii_io::DEL)
+				{
+					owned_tank_input.remove_item(tank_selection);
+					owned_tank_input.build();
+					for (unsigned int i = 0; i < tank_templates.size(); i++)
+					{
+						if (tank_templates[i].get_name() == tank_selection)
+						{
+							std::string budget = fleet_cost_data.get_output();
+							fleet_cost_data.set_output(std::to_string(stoi(budget) - tank_templates[i].get_cost()));
+						}
+					}
+				}
+				else if (key_stroke == ascii_io::v)
+				{
+					display_tank_view(tank_selection, "top");
+					ascii_io::getchar();
+					ascii_io::zoom_to_level(-1);
+				}
+				else if (key_stroke == ascii_io::s)
+				{
+					for (unsigned int i = 0; i < tank_templates.size(); i++)
+					{
+						if (tank_templates[i].get_name() == tank_selection)
+						{
+							display_tank_stats(tank_templates[i]);
+							ascii_io::getchar();
+							ascii_io::zoom_to_level(-1);
+						}
+					}
+				}
+			}
+			else if (selection == finalize_fleet_setup)
+			{
+				valid_inputs = true;
+			}
+
+		} while (selection != finalize_fleet_setup);
+	}
+
+}
+
 board_configuration display::build_damage_config(const std::string& name_id, const std::string& value, char ignore_character, const std::vector<format_tools::index_format>& colors)
 {
 	tile_configuration tile_config;
@@ -350,4 +609,154 @@ void display::create_tank_views()
 	file_manager::read_file("text_images/tank_images/Wolverine/Wolverine_left_view.txt", view.left_view);
 	file_manager::read_file("text_images/tank_images/Wolverine/Wolverine_right_view.txt", view.right_view);
 	tank_views.push_back(view);
+}
+
+void display::setup_tank_view()
+{
+	tank_image_one.set_alignment("center block");
+	tank_image_one.enable_word_wrap(false);
+	tank_image_two.set_alignment("center block");
+	tank_image_two.enable_word_wrap(false);
+
+	create_tank_views();
+}
+
+void display::setup_tank_stats()
+{
+	tank_damage_frame->enable_dec(true);
+	tank_damage_frame->enable_color(true);
+	tank_stats.set_alignment("center block");
+
+	std::vector<format_tools::index_format> colors;
+	format_tools::index_format color;
+	color.index = 0;
+	color.format.background_format = format_tools::red;
+	colors.push_back(color);
+
+	tank_stats.add_configuration(build_damage_config("damaged", "   ", '*', colors));
+	color.format.background_format = format_tools::white;
+	colors.clear();
+	colors.push_back(color);
+	tank_stats.add_configuration(build_damage_config("missing", "   ", '*', colors));
+}
+
+void display::setup_scenario_setup()
+{
+	player_number_prompt.set_spacing(1, 0, 10, 5);
+	player_number_prompt.set_alignment("center");
+	player_number_prompt.set_output("Enter number of players to play:");
+
+	player_number_input.set_spacing(0, 0, 10, 5);
+	player_number_input.add_border(true);
+	player_number_input.append_item("2");
+	player_number_input.append_item("3");
+	player_number_input.append_item("4");
+	player_number_input.build();
+
+	budget_prompt.set_spacing(5, 0, 10, 5);
+	budget_prompt.set_alignment("center");
+	budget_prompt.set_output("Select budget:");
+
+	budget_input.set_spacing(0, 0, 10, 5);
+	budget_input.add_border(true);
+	budget_input.set_alignment("center block");
+	budget_input.append_item("500000");
+	budget_input.append_item("1000000");
+	budget_input.append_item("5000000");
+	budget_input.append_item("10000000");
+	budget_input.build();
+
+	faction_mixing_prompt.set_spacing(5, 0, 10, 5);
+	faction_mixing_prompt.set_alignment("center");
+	faction_mixing_prompt.set_output("Mercenaries allowed:");
+
+	faction_mixing_input.set_spacing(0, 0, 10, 5);
+	faction_mixing_input.set_alignment("center block");
+	faction_mixing_input.add_border(true);
+	faction_mixing_input.append_item("Yes");
+	faction_mixing_input.append_item("No");
+	faction_mixing_input.build();
+
+	finalize_scenario_setup.set_spacing(2, 0, 10, 5);
+	finalize_scenario_setup.set_alignment("center");
+	finalize_scenario_setup.set_output("Finalize");
+	finalize_scenario_setup.add_border(true);
+	finalize_scenario_setup.selectable();
+
+	scenario_setup_decal.set_spacing(1, 0, 5, 10);
+	scenario_setup_decal.enable_word_wrap(false);
+	scenario_setup_decal.set_alignment("center block");
+	std::string renegade_solider = "";
+	file_manager::read_file("text_images/Renegade_Solider.txt", renegade_solider);
+	scenario_setup_decal.set_output(renegade_solider);
+}
+
+void display::setup_tank_fleet_setup()
+{
+	player_name_prompt.set_alignment("center");
+	player_name_prompt.set_spacing(1, 0, 5, 10);
+	player_name_prompt.set_output("Enter your name:");
+
+	player_name_input.set_spacing(0, 0, 5, 10);
+	player_name_input.add_border(true);
+
+	faction_prompt.set_spacing(2, 0, 5, 10);
+	faction_prompt.set_alignment("center");
+	faction_prompt.set_output("Choose a faction:");
+
+	faction_input.set_spacing(0, 0, 5, 10);
+	faction_input.add_border(true);
+
+	tank_fleet_setup_decal.set_spacing(2, 0, 5, 10);
+	tank_fleet_setup_decal.enable_word_wrap(false);
+	tank_fleet_setup_decal.set_alignment("center block");
+
+	tank_selection_prompt.set_spacing(1, 0, 5, 10);
+	tank_selection_prompt.set_alignment("center");
+	tank_selection_prompt.set_output("Choose tanks for your fleet:");
+
+	tank_selection_input.set_spacing(0, 0, 5, 10);
+	tank_selection_input.add_border(true);
+	tank_selection_input.set_controls({ ascii_io::enter, ascii_io::v, ascii_io::s }, ascii_io::up, ascii_io::down, ascii_io::q);
+
+	owned_tank_prompt.set_spacing(2, 0, 5, 10);
+	owned_tank_prompt.set_alignment("center");
+	owned_tank_prompt.set_output("Selected tanks:");
+
+	owned_tank_input.set_spacing(0, 0, 5, 10);
+	owned_tank_input.add_border(true);
+	owned_tank_input.set_controls({ ascii_io::DEL, ascii_io::v, ascii_io::s }, ascii_io::up, ascii_io::down, ascii_io::q);
+
+	budget_data.set_spacing(1, 0, 5, 10);
+
+	fleet_cost_data.set_spacing(1, 0, 5, 10);
+	fleet_cost_data.add_border(true);
+
+	finalize_fleet_setup.set_spacing(0, 0, 5, 10);
+	finalize_fleet_setup.add_border(true);
+	finalize_fleet_setup.set_alignment("center");
+	finalize_fleet_setup.set_output("Finalize");
+	finalize_fleet_setup.selectable();
+}
+
+bool display::is_number(const std::string& number_string)
+{
+	bool number = true;
+	if (number_string.length() == 0)
+	{
+		number = false;
+	}
+	else
+	{
+		for (unsigned int i = 0; i < number_string.length(); i++)
+		{
+			if (!isdigit(number_string[i]))
+			{
+				number = false;
+				break;
+			}
+		}
+	}
+
+	return number;
 }

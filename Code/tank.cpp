@@ -288,6 +288,16 @@ int tank::set_bottom_armor_thickness(int thickness)
 	return status;
 }
 
+void tank::set_faction(const std::string& faction)
+{
+	_faction = faction;
+}
+
+void tank::set_cost(float cost)
+{
+	_cost = cost;
+}
+
 int tank::apply_damage(const std::string& side, int column, const std::vector<weapons::damage_coordinate>& damage)
 {
 	int status = INVALID_VALUE;
@@ -435,6 +445,16 @@ int tank::get_right_armor_thickness()
 int tank::get_bottom_armor_thickness()
 {
 	return bottom_armor_thickness;
+}
+
+std::string tank::get_faction()
+{
+	return _faction;
+}
+
+float tank::get_cost()
+{
+	return _cost;
 }
 
 tank::damage_record tank::get_damage_record()

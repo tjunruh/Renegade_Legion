@@ -11,7 +11,9 @@ int main()
     frame* home_frame = new frame();
     frame* tank_view_frame = new frame();
     frame* tank_stats_frame = new frame();
-    game_operations game_manager(tank_view_frame, tank_stats_frame);
+    frame* scenario_setup_frame = new frame();
+    frame* tank_fleet_setup_display = new frame();
+    game_operations game_manager(tank_view_frame, tank_stats_frame, scenario_setup_frame, tank_fleet_setup_display);
     std::string logo_text = "";
     file_manager::read_file("text_images/logo.txt", logo_text);
     label logo(home_frame);
@@ -31,6 +33,7 @@ int main()
     std::string selection = "";
     do
     {
+        ascii_io::zoom_to_level(0);
         home_frame->display();
         int key_stroke = ascii_io::undefined;
         initialization_menu.get_selection(selection, key_stroke);
@@ -39,10 +42,18 @@ int main()
         {
             game_manager.run_tank_view();
         }
+        else if (selection == "New Game")
+        {
+            game_manager.run_new_game_setup();
+        }
 
     } while (selection != "Exit");
 
     delete(home_frame);
+    delete(tank_view_frame);
+    delete(tank_stats_frame);
+    delete(scenario_setup_frame);
+    delete(tank_fleet_setup_display);
     ascii_io::show_cursor();
     ascii_io::ascii_engine_end();
 }

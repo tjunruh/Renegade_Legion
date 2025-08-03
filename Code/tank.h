@@ -72,6 +72,8 @@ public:
 	int set_front_armor_thickness(int thickness);
 	int set_right_armor_thickness(int thickness);
 	int set_bottom_armor_thickness(int thickness);
+	void set_faction(const std::string& faction);
+	void set_cost(float cost);
 	int apply_damage(const std::string& side, int column, const std::vector<weapons::damage_coordinate>& damage);
 	std::string get_name();
 	int get_number();
@@ -95,6 +97,8 @@ public:
 	int get_front_armor_thickness();
 	int get_right_armor_thickness();
 	int get_bottom_armor_thickness();
+	std::string get_faction();
+	float get_cost();
 	damage_record get_damage_record();
 	std::vector<velocity_record_unit> get_velocity_record();
 
@@ -128,6 +132,8 @@ private:
 	int front_armor_thickness = 0;
 	int right_armor_thickness = 0;
 	int bottom_armor_thickness = 0;
+	std::string _faction = "";
+	float _cost = 0.0;
 	damage_record total_damage;
 	std::vector<velocity_record_unit> velocity_record;
 

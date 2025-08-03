@@ -22,6 +22,8 @@ void logic::create_aeneas_template()
 {
 	tank aeneas;
 	aeneas.set_name("Aeneas");
+	aeneas.set_faction("TOG");
+	aeneas.set_cost(861550);
 	aeneas.set_stern_shield_factor(6);
 	aeneas.set_left_shield_factor(5);
 	aeneas.set_front_shield_factor(6);
@@ -50,6 +52,8 @@ void logic::create_horatius_template()
 {
 	tank horatius;
 	horatius.set_name("Horatius");
+	horatius.set_faction("TOG");
+	horatius.set_cost(1617700);
 	horatius.set_stern_shield_factor(7);
 	horatius.set_left_shield_factor(6);
 	horatius.set_front_shield_factor(7);
@@ -80,6 +84,8 @@ void logic::create_liberator_template()
 {
 	tank liberator;
 	liberator.set_name("Liberator");
+	liberator.set_faction("Renegade");
+	liberator.set_cost(1636350);
 	liberator.set_stern_shield_factor(6);
 	liberator.set_left_shield_factor(5);
 	liberator.set_front_shield_factor(6);
@@ -111,6 +117,8 @@ void logic::create_lupis_template()
 {
 	tank lupis;
 	lupis.set_name("Lupis");
+	lupis.set_faction("TOG");
+	lupis.set_cost(454900);
 	lupis.set_stern_shield_factor(5);
 	lupis.set_left_shield_factor(4);
 	lupis.set_front_shield_factor(5);
@@ -137,6 +145,8 @@ void logic::create_remus_template()
 {
 	tank remus;
 	remus.set_name("Remus");
+	remus.set_faction("TOG");
+	remus.set_cost(984600);
 	remus.set_stern_shield_factor(8);
 	remus.set_left_shield_factor(7);
 	remus.set_front_shield_factor(8);
@@ -168,7 +178,8 @@ void logic::create_romulus_template()
 {
 	tank romulus;
 	romulus.set_name("Romulus");
-
+	romulus.set_faction("TOG");
+	romulus.set_cost(1027900);
 	romulus.set_stern_shield_factor(8);
 	romulus.set_left_shield_factor(7);
 	romulus.set_front_shield_factor(8);
@@ -201,6 +212,8 @@ void logic::create_spartius_template()
 {
 	tank spartius;
 	spartius.set_name("Spartius");
+	spartius.set_faction("Renegade");
+	spartius.set_cost(1219850);
 	spartius.set_stern_shield_factor(7);
 	spartius.set_left_shield_factor(6);
 	spartius.set_front_shield_factor(7);
@@ -234,6 +247,8 @@ void logic::create_viper_template()
 {
 	tank viper;
 	viper.set_name("Viper");
+	viper.set_faction("Renegade");
+	viper.set_cost(474600);
 	viper.set_stern_shield_factor(5);
 	viper.set_left_shield_factor(4);
 	viper.set_front_shield_factor(5);
@@ -264,6 +279,8 @@ void logic::create_wolverine_template()
 {
 	tank wolverine;
 	wolverine.set_name("Wolverine");
+	wolverine.set_faction("Renegade");
+	wolverine.set_cost(824300);
 	wolverine.set_stern_shield_factor(5);
 	wolverine.set_left_shield_factor(4);
 	wolverine.set_front_shield_factor(6);

@@ -6,7 +6,7 @@
 #include <chrono>
 
 
-game_operations::game_operations(frame* tank_view_display, frame* tank_damage_display) : display_manager(tank_view_display, tank_damage_display)
+game_operations::game_operations(frame* tank_view_display, frame* tank_damage_display, frame* scenario_setup_display, frame* tank_fleet_display) : display_manager(tank_view_display, tank_damage_display, scenario_setup_display, tank_fleet_display)
 {
 	tank_templates = logic_manager.get_tank_templates();
 }
@@ -159,4 +159,19 @@ void game_operations::run_tank_view()
 
 	ascii_io::zoom_to_level(0);
 	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+}
+
+void game_operations::run_new_game_setup()
+{
+	unsigned int number_of_players = 0;
+	int budget = 0;
+	bool faction_mixing_allowed = false;
+	display_manager.display_scenario_setup(number_of_players, budget, faction_mixing_allowed);
+	for (unsigned int i = 0; i < number_of_players; i++)
+	{
+		std::string player_name = "";
+		std::vector<tank> tank_fleet;
+		std::string faction = "none";
+		display_manager.display_tank_fleet_setup(budget, faction_mixing_allowed, tank_templates, player_name, faction, tank_fleet);
+	}
 }

@@ -2,6 +2,7 @@
 #include <ascii_engine/ascii_io.h>
 #include <ascii_engine/file_manager.h>
 #include <ascii_engine/format_tools.h>
+#include <ascii_engine/error_codes.h>
 #include "damage_code.h"
 #include <time.h>
 #include <thread>
@@ -390,112 +391,132 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 	}
 
 	int selection = -1;
-	bool valid_inputs = false;
 	int key_stroke = ascii_io::undefined;
 
-	while (!valid_inputs)
+	do
 	{
-		do
+		selection = tank_fleet_setup_frame->get_selection();
+		if (selection == player_name_input)
 		{
-			selection = tank_fleet_setup_frame->get_selection();
-			if (selection == player_name_input)
+			player_name_input.write();
+			ascii_io::hide_cursor();
+			player_name = player_name_input.get_text();
+		}
+		else if (selection == faction_input)
+		{
+			std::string previous_faction = faction;
+			faction_input.get_selection(faction, key_stroke);
+			if (faction != previous_faction)
 			{
-				player_name_input.write();
-				ascii_io::hide_cursor();
-				player_name = player_name_input.get_text();
-			}
-			else if (selection == faction_input)
-			{
-				std::string previous_faction = faction;
-				faction_input.get_selection(faction, key_stroke);
-				if (faction != previous_faction)
+				tank_selection_input.remove_all_items();
+				if (faction == "Mercenary")
 				{
-					tank_selection_input.remove_all_items();
-					if (faction == "Mercenary")
+					for (unsigned int i = 0; i < tank_templates.size(); i++)
 					{
-						for (unsigned int i = 0; i < tank_templates.size(); i++)
+						tank_selection_input.append_item(tank_templates[i].get_name());
+						tank_selection_input.append_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
+					}
+
+					tank_fleet_setup_decal.set_output(mercenary_symbol);
+				}
+				else
+				{
+					for (unsigned int i = 0; i < tank_templates.size(); i++)
+					{
+						if (tank_templates[i].get_faction() == faction)
 						{
 							tank_selection_input.append_item(tank_templates[i].get_name());
 							tank_selection_input.append_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
 						}
+					}
+					owned_tank_input.remove_all_items();
+					owned_tank_input.build();
+					fleet_cost_data.set_output("0");
 
-						tank_fleet_setup_decal.set_output(mercenary_symbol);
+					if (faction == "Renegade")
+					{
+						tank_fleet_setup_decal.set_output(renegade_symbol);
+					}
+					else if (faction == "TOG")
+					{
+						tank_fleet_setup_decal.set_output(tog_symbol);
+					}
+				}
+				tank_selection_input.build();
+			}
+		}
+		else if (selection == tank_selection_input)
+		{
+			std::string tank_selection = "";
+			tank_selection_input.get_selection(tank_selection, key_stroke);
+			if (key_stroke == ascii_io::enter)
+			{
+				for (unsigned int i = 0; i < tank_templates.size(); i++)
+				{
+					if (tank_templates[i].get_name() == tank_selection)
+					{
+						std::string budget_string = fleet_cost_data.get_output();
+						int fleet_cost = stoi(budget_string) + tank_templates[i].get_cost();
+						if (fleet_cost < budget)
+						{
+							fleet_cost_data.set_output(std::to_string(fleet_cost));
+							int append_item_status = owned_tank_input.append_item(tank_templates[i].get_name());
+							if (append_item_status == DUPLICATE_ELEMENT)
+							{
+								std::string quantity = "";
+								owned_tank_input.get_item_label(tank_templates[i].get_name(), 0, quantity);
+								owned_tank_input.set_item_label(tank_templates[i].get_name(), 0, std::to_string(stoi(quantity) + 1));
+							}
+							else
+							{
+								owned_tank_input.set_item_label(tank_templates[i].get_name(), 0, "1");
+								owned_tank_input.set_item_label(tank_templates[i].get_name(), 1, std::to_string(tank_templates[i].get_cost()));
+							}
+							owned_tank_input.build();
+						}
+					}
+				}
+			}
+			else if (key_stroke == ascii_io::v)
+			{
+				display_tank_view(tank_selection, "top");
+				ascii_io::getchar();
+				ascii_io::zoom_to_level(-1);
+			}
+			else if (key_stroke == ascii_io::s)
+			{
+				for (unsigned int i = 0; i < tank_templates.size(); i++)
+				{
+					if (tank_templates[i].get_name() == tank_selection)
+					{
+						display_tank_stats(tank_templates[i]);
+						ascii_io::getchar();
+						ascii_io::zoom_to_level(-1);
+					}
+				}
+			}
+		}
+		else if (selection == owned_tank_input)
+		{
+			std::string tank_selection = "";
+			owned_tank_input.get_selection(tank_selection, key_stroke);
+			if (tank_selection != "")
+			{
+				if (key_stroke == ascii_io::DEL)
+				{
+					std::string quantity = "";
+					owned_tank_input.get_item_label(tank_selection, 0, quantity);
+					if (quantity == "1")
+					{
+						owned_tank_input.remove_item(tank_selection);
 					}
 					else
 					{
-						for (unsigned int i = 0; i < tank_templates.size(); i++)
-						{
-							if (tank_templates[i].get_faction() == faction)
-							{
-								tank_selection_input.append_item(tank_templates[i].get_name());
-								tank_selection_input.append_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
-							}
-						}
-						owned_tank_input.remove_all_items();
-						owned_tank_input.build();
-						fleet_cost_data.set_output("0");
+						owned_tank_input.set_item_label(tank_selection, 0, std::to_string(stoi(quantity) - 1));
+					}
 
-						if (faction == "Renegade")
-						{
-							tank_fleet_setup_decal.set_output(renegade_symbol);
-						}
-						else if (faction == "TOG")
-						{
-							tank_fleet_setup_decal.set_output(tog_symbol);
-						}
-					}
-					tank_selection_input.build();
-				}
-			}
-			else if (selection == tank_selection_input)
-			{
-				std::string tank_selection = "";
-				tank_selection_input.get_selection(tank_selection, key_stroke);
-				if (key_stroke == ascii_io::enter)
-				{
-					for (unsigned int i = 0; i < tank_templates.size(); i++)
-					{
-						if (tank_templates[i].get_name() == tank_selection)
-						{
-							std::string budget_string = fleet_cost_data.get_output();
-							int fleet_cost = stoi(budget_string) + tank_templates[i].get_cost();
-							if (fleet_cost < budget)
-							{
-								fleet_cost_data.set_output(std::to_string(fleet_cost));
-								int status = owned_tank_input.append_item(tank_templates[i].get_name());
-								owned_tank_input.append_item_label(tank_templates[i].get_name(), std::to_string(tank_templates[i].get_cost()));
-								owned_tank_input.build();
-							}
-						}
-					}
-				}
-				else if (key_stroke == ascii_io::v)
-				{
-					display_tank_view(tank_selection, "top");
-					ascii_io::getchar();
-					ascii_io::zoom_to_level(-1);
-				}
-				else if (key_stroke == ascii_io::s)
-				{
-					for (unsigned int i = 0; i < tank_templates.size(); i++)
-					{
-						if (tank_templates[i].get_name() == tank_selection)
-						{
-							display_tank_stats(tank_templates[i]);
-							ascii_io::getchar();
-							ascii_io::zoom_to_level(-1);
-						}
-					}
-				}
-			}
-			else if (selection == owned_tank_input)
-			{
-				std::string tank_selection = "";
-				owned_tank_input.get_selection(tank_selection, key_stroke);
-				if (key_stroke == ascii_io::DEL)
-				{
-					owned_tank_input.remove_item(tank_selection);
 					owned_tank_input.build();
+
 					for (unsigned int i = 0; i < tank_templates.size(); i++)
 					{
 						if (tank_templates[i].get_name() == tank_selection)
@@ -524,12 +545,23 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 					}
 				}
 			}
-			else if (selection == finalize_fleet_setup)
-			{
-				valid_inputs = true;
-			}
+		}
+	} while (selection != finalize_fleet_setup);
 
-		} while (selection != finalize_fleet_setup);
+	std::vector<menu::item_structure> tank_fleet_data = owned_tank_input.get_menu_item_data();
+	for (unsigned int i = 0; i < tank_fleet_data.size(); i++)
+	{
+		for (unsigned int j = 0; j < tank_templates.size(); j++)
+		{
+			if (tank_templates[j].get_name() == tank_fleet_data[i].item)
+			{
+				unsigned int quantity = stoi(tank_fleet_data[i].labels[0]);
+				for (unsigned int k = 0; k < quantity; k++)
+				{
+					tank_fleet.push_back(tank_templates[j]);
+				}
+			}
+		}
 	}
 
 }
@@ -718,6 +750,10 @@ void display::setup_tank_fleet_setup()
 	tank_selection_input.set_spacing(0, 0, 5, 10);
 	tank_selection_input.add_border(true);
 	tank_selection_input.set_controls({ ascii_io::enter, ascii_io::v, ascii_io::s }, ascii_io::up, ascii_io::down, ascii_io::left, ascii_io::right, ascii_io::q);
+	tank_selection_input.append_item("tank");
+	tank_selection_input.append_item_label("tank", "cost");
+	tank_selection_input.use_top_row_as_heading(true);
+	tank_selection_input.build();
 
 	owned_tank_prompt.set_spacing(2, 0, 5, 10);
 	owned_tank_prompt.set_alignment("center");
@@ -726,6 +762,11 @@ void display::setup_tank_fleet_setup()
 	owned_tank_input.set_spacing(0, 0, 5, 10);
 	owned_tank_input.add_border(true);
 	owned_tank_input.set_controls({ ascii_io::DEL, ascii_io::v, ascii_io::s }, ascii_io::up, ascii_io::down, ascii_io::left, ascii_io::right, ascii_io::q);
+	owned_tank_input.append_item("tank");
+	owned_tank_input.append_item_label("tank", "quantity");
+	owned_tank_input.append_item_label("tank", "cost");
+	owned_tank_input.use_top_row_as_heading(true);
+	owned_tank_input.build();
 
 	budget_data.set_spacing(1, 0, 5, 10);
 

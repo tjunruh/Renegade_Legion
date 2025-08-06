@@ -130,7 +130,7 @@ void game_operations::run_tank_view()
 					{
 						display_manager.display_tank_stats(tank_templates[i]);
 						refresh_display = true;
-						ascii_io::getchar();
+						ascii_io::wait_for_keystroke({ ascii_io::q, ascii_io::enter });
 						break;
 					}
 				}
@@ -143,7 +143,7 @@ void game_operations::run_tank_view()
 					{
 						display_manager.display_tank_stats(tank_templates[i]);
 						refresh_display = true;
-						ascii_io::getchar();
+						ascii_io::wait_for_keystroke({ ascii_io::q, ascii_io::enter });
 						break;
 					}
 				}

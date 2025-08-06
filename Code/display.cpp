@@ -480,7 +480,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 			else if (key_stroke == ascii_io::v)
 			{
 				display_tank_view(tank_selection, "top");
-				ascii_io::getchar();
+				ascii_io::wait_for_keystroke({ ascii_io::q, ascii_io::enter });
 				ascii_io::zoom_to_level(-1);
 			}
 			else if (key_stroke == ascii_io::s)
@@ -490,7 +490,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 					if (tank_templates[i].get_name() == tank_selection)
 					{
 						display_tank_stats(tank_templates[i]);
-						ascii_io::getchar();
+						ascii_io::wait_for_keystroke({ ascii_io::q, ascii_io::enter });
 						ascii_io::zoom_to_level(-1);
 					}
 				}
@@ -529,7 +529,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 				else if (key_stroke == ascii_io::v)
 				{
 					display_tank_view(tank_selection, "top");
-					ascii_io::getchar();
+					ascii_io::wait_for_keystroke({ ascii_io::q, ascii_io::enter });
 					ascii_io::zoom_to_level(-1);
 				}
 				else if (key_stroke == ascii_io::s)
@@ -539,7 +539,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 						if (tank_templates[i].get_name() == tank_selection)
 						{
 							display_tank_stats(tank_templates[i]);
-							ascii_io::getchar();
+							ascii_io::wait_for_keystroke({ ascii_io::q, ascii_io::enter });
 							ascii_io::zoom_to_level(-1);
 						}
 					}

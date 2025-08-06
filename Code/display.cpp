@@ -126,6 +126,48 @@ void display::display_tank_view(const std::string& tank_one_name, const std::str
 	tank_view_frame->display();
 }
 
+void display::scroll_tank_image(int image_number, const std::string& direction, unsigned int amount)
+{
+	if (image_number == 1)
+	{
+		if (direction == "up")
+		{
+			tank_image_one.scroll_up(amount);
+		}
+		else if (direction == "down")
+		{
+			tank_image_one.scroll_down(amount);
+		}
+		else if (direction == "left")
+		{
+			tank_image_one.scroll_left(amount);
+		}
+		else if (direction == "right")
+		{
+			tank_image_one.scroll_right(amount);
+		}
+	}
+	else if (image_number == 2)
+	{
+		if (direction == "up")
+		{
+			tank_image_two.scroll_up(amount);
+		}
+		else if (direction == "down")
+		{
+			tank_image_two.scroll_down(amount);
+		}
+		else if (direction == "left")
+		{
+			tank_image_two.scroll_left(amount);
+		}
+		else if (direction == "right")
+		{
+			tank_image_two.scroll_right(amount);
+		}
+	}
+}
+
 void display::display_tank_stats(tank& tank_data)
 {
 	ascii_io::zoom_to_level(-3);
@@ -480,7 +522,41 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 			else if (key_stroke == ascii_io::v)
 			{
 				display_tank_view(tank_selection, "top");
-				ascii_io::wait_for_keystroke({ ascii_io::q, ascii_io::enter });
+				unsigned int input = ascii_io::undefined;
+				do
+				{
+					input = ascii_io::getchar();
+					if (input == ascii_io::t)
+					{
+						display_tank_view(tank_selection, "top");
+					}
+					else if (input == ascii_io::r)
+					{
+						display_tank_view(tank_selection, "right");
+					}
+					else if (input == ascii_io::l)
+					{
+						display_tank_view(tank_selection, "left");
+					}
+					else if (input == ascii_io::w)
+					{
+						scroll_tank_image(1, "up", 10);
+					}
+					else if (input == ascii_io::s)
+					{
+						scroll_tank_image(1, "down", 10);
+					}
+					else if (input == ascii_io::d)
+					{
+						scroll_tank_image(1, "right", 3);
+					}
+					else if (input == ascii_io::a)
+					{
+						scroll_tank_image(1, "left", 3);
+					}
+
+				} while (input != ascii_io::q && input != ascii_io::enter);
+
 				ascii_io::zoom_to_level(-1);
 			}
 			else if (key_stroke == ascii_io::s)

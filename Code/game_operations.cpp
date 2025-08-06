@@ -120,6 +120,22 @@ void game_operations::run_tank_view()
 				image_two_side = "right";
 			}
 		}
+		else if (input == ascii_io::w)
+		{
+			display_manager.scroll_tank_image(image, "up", 10);
+		}
+		else if (input == ascii_io::s)
+		{
+			display_manager.scroll_tank_image(image, "down", 10);
+		}
+		else if (input == ascii_io::a)
+		{
+			display_manager.scroll_tank_image(image, "left", 3);
+		}
+		else if (input == ascii_io::d)
+		{
+			display_manager.scroll_tank_image(image, "right", 3);
+		}
 		else if (input == ascii_io::enter)
 		{
 			if (image == 1)

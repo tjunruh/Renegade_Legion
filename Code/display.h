@@ -16,6 +16,7 @@ public:
 	display(frame* tank_view_display, frame* tank_damage_display, frame* scenario_setup_display, frame* tank_fleet_setup_display);
 	void display_tank_view(const std::string& tank_name, const std::string& tank_side);
 	void display_tank_view(const std::string& tank_one_name, const std::string& tank_one_side, const std::string& tank_two_name, const std::string& tank_two_side);
+	void scroll_tank_image(int image_number, const std::string& direction, unsigned int amount);
 	void display_tank_stats(tank& tank_data);
 	void display_scenario_setup(unsigned int& number_of_players, int& budget, bool& faction_mixing_allowed);
 	void display_tank_fleet_setup(int budget, bool faction_mixing_allowed, std::vector<tank>& tank_templates, std::string& player_name, std::string& faction, std::vector<tank>& tank_fleet);

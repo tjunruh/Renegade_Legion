@@ -73,6 +73,9 @@ void display::display_tank_view(const std::string& tank_name, const std::string&
 			break;
 		}
 	}
+#ifdef __linux__
+	ascii_io::guarantee_clear_on_next_display();
+#endif
 
 	tank_view_frame->display();
 }
@@ -122,7 +125,10 @@ void display::display_tank_view(const std::string& tank_one_name, const std::str
 			break;
 		}
 	}
-	
+#ifdef __linux__
+	ascii_io::guarantee_clear_on_next_display();
+#endif
+
 	tank_view_frame->display();
 }
 
@@ -723,8 +729,10 @@ void display::setup_tank_view()
 {
 	tank_image_one.set_alignment("center block");
 	tank_image_one.enable_word_wrap(false);
+	tank_image_one.set_lines_count(-1);
 	tank_image_two.set_alignment("center block");
 	tank_image_two.enable_word_wrap(false);
+	tank_image_two.set_lines_count(-1);
 
 	create_tank_views();
 }

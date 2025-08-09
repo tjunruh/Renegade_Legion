@@ -51,7 +51,12 @@ display::display(frame* tank_view_display, frame* tank_damage_display, frame* sc
 
 void display::display_tank_view(const std::string& tank_name, const std::string& tank_side)
 {
-	ascii_io::zoom_to_level(-7);
+#ifdef _WIN32
+	ascii_io::zoom_to_level(-7, 300);
+#elif __linux__
+	ascii_io::zoom_to_level(-6, 300);
+#endif
+
 	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 	for (unsigned int i = 0; i < tank_views.size(); i++)
 	{
@@ -77,12 +82,18 @@ void display::display_tank_view(const std::string& tank_name, const std::string&
 	ascii_io::guarantee_clear_on_next_display();
 #endif
 
+	tank_image_two.set_output("");
 	tank_view_frame->display();
 }
 
 void display::display_tank_view(const std::string& tank_one_name, const std::string& tank_one_side, const std::string& tank_two_name, const std::string& tank_two_side)
 {
-	ascii_io::zoom_to_level(-7);
+#ifdef _WIN32
+	ascii_io::zoom_to_level(-7, 300);
+#elif __linux__
+	ascii_io::zoom_to_level(-6, 300);
+#endif
+
 	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 	for (unsigned int i = 0; i < tank_views.size(); i++)
 	{
@@ -176,8 +187,14 @@ void display::scroll_tank_image(int image_number, const std::string& direction, 
 
 void display::display_tank_stats(tank& tank_data)
 {
-	ascii_io::zoom_to_level(-3);
+#ifdef _WIN32
+	ascii_io::zoom_to_level(-3, 300);
+#elif __linux__
+	ascii_io::zoom_to_level(-4, 300);
+#endif
+
 	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+
 	tank_stats.clear_all();
 	tank_stats.set_tile(22, 0, tank_data.get_name());
 	tank_stats.set_tile(22, 1, std::to_string(tank_data.get_number()));
@@ -357,13 +374,13 @@ void display::display_tank_stats(tank& tank_data)
 	}
 
 	tank_stats.build();
-
 	tank_damage_frame->display();
+
 }
 
 void display::display_scenario_setup(unsigned int& number_of_players, int& budget, bool& faction_mixing_allowed)
 {
-	ascii_io::zoom_to_level(-1);
+	ascii_io::zoom_to_level(-1, 300);
 	int selection = -1;
 	std::string raw_number_of_players = "2";
 	std::string raw_budget = "500000";
@@ -402,7 +419,7 @@ void display::display_scenario_setup(unsigned int& number_of_players, int& budge
 
 void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, std::vector<tank>& tank_templates, std::string& player_name, std::string& faction, std::vector<tank>& tank_fleet)
 {
-	ascii_io::zoom_to_level(0);
+	ascii_io::zoom_to_level(0, 300);
 	faction = "Renegade";
 	std::string tog_symbol = "";
 	std::string renegade_symbol = "";
@@ -411,7 +428,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 	file_manager::read_file("text_images/TOG_Symbol.txt", tog_symbol);
 	file_manager::read_file("text_images/Mercenary_Symbol.txt", mercenary_symbol);
 	tank_fleet_setup_decal.set_output(renegade_symbol);
-	ascii_io::zoom_to_level(-1);
+	ascii_io::zoom_to_level(-1, 300);
 	fleet_cost_data.set_output("0");
 	faction_input.remove_all_items();
 	faction_input.append_item("Renegade");
@@ -563,7 +580,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 
 				} while (input != ascii_io::q && input != ascii_io::enter);
 
-				ascii_io::zoom_to_level(-1);
+				ascii_io::zoom_to_level(-1, 300);
 			}
 			else if (key_stroke == ascii_io::s)
 			{
@@ -573,7 +590,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 					{
 						display_tank_stats(tank_templates[i]);
 						ascii_io::wait_for_keystroke({ ascii_io::q, ascii_io::enter });
-						ascii_io::zoom_to_level(-1);
+						ascii_io::zoom_to_level(-1, 300);
 					}
 				}
 			}
@@ -612,7 +629,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 				{
 					display_tank_view(tank_selection, "top");
 					ascii_io::wait_for_keystroke({ ascii_io::q, ascii_io::enter });
-					ascii_io::zoom_to_level(-1);
+					ascii_io::zoom_to_level(-1, 300);
 				}
 				else if (key_stroke == ascii_io::s)
 				{
@@ -622,7 +639,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 						{
 							display_tank_stats(tank_templates[i]);
 							ascii_io::wait_for_keystroke({ ascii_io::q, ascii_io::enter });
-							ascii_io::zoom_to_level(-1);
+							ascii_io::zoom_to_level(-1, 300);
 						}
 					}
 				}

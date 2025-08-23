@@ -539,5 +539,356 @@
 ** Define Metadata - Global: (Key, Value) Action Tile Specific: {(Key, Value), (Key, Value), (Key, Value)...} - value can be integer, float, or string (string must be enclosed in quotation marks).
 Note that two key value pairs in each curly bracket block must be used to define the row and column of action tile the metadata is related to **
 ** metadata begin **
+{ (row, 0) (column, 0) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 1) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 2) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 3) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 4) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 5) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 6) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 7) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 8) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 9) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 10) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 11) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 0) (column, 12) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 13) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 14) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 15) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 16) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 17) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 18) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 19) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 20) (terrain_quantity, 0) (level, 0) }
+{ (row, 0) (column, 21) (terrain_quantity, 0) (level, 2) }
+{ (row, 0) (column, 22) (terrain_quantity, 0) (level, 2) }
+{ (row, 0) (column, 23) (terrain_quantity, 0) (level, 2) }
+{ (row, 0) (column, 24) (terrain_quantity, 0) (level, 0) }
+
+{ (row, 1) (column, 0) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 1) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 2) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 3) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 4) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 5) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 6) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 7) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 8) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 9) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 1) (column, 10) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 1) (column, 11) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 12) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 1) (column, 13) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 1) (column, 14) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 15) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 16) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 17) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 18) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 19) (terrain_quantity, 0) (level, 0) }
+{ (row, 1) (column, 20) (terrain_quantity, 0) (level, 3) }
+{ (row, 1) (column, 21) (terrain_quantity, 0) (level, 4) }
+{ (row, 1) (column, 22) (terrain_quantity, 0) (level, 4) }
+{ (row, 1) (column, 23) (terrain_quantity, 0) (level, 4) }
+{ (row, 1) (column, 24) (terrain_quantity, 0) (level, 2) }
+
+{ (row, 2) (column, 0) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 1) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 2) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 3) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 4) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 5) (terrain_quantity, 1) (terrain_0, "heavy woods") (level, 0) }
+{ (row, 2) (column, 6) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 7) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 2) (column, 8) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 2) (column, 9) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 10) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 11) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 12) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 13) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 14) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 2) (column, 15) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 2) (column, 16) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 17) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 18) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 19) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 20) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 21) (terrain_quantity, 0) (level, 0) }
+{ (row, 2) (column, 22) (terrain_quantity, 0) (level, 4) }
+{ (row, 2) (column, 23) (terrain_quantity, 0) (level, 4) }
+{ (row, 2) (column, 24) (terrain_quantity, 0) (level, 3) }
+
+{ (row, 3) (column, 0) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 1) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 2) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 3) (terrain_quantity, 1) (terrain_0, "heavy woods") (level, 0) }
+{ (row, 3) (column, 4) (terrain_quantity, 1) (terrain_0, "heavy woods") (level, 0) }
+{ (row, 3) (column, 5) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 6) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 3) (column, 7) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 8) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 9) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 10) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 11) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 12) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 13) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 14) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 15) (terrain_quantity, 2) (terrain_0, "river") (terrain_1, "light woods") (level, 0) }
+{ (row, 3) (column, 16) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 17) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 18) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 19) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 20) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 21) (terrain_quantity, 0) (level, 2) }
+{ (row, 3) (column, 22) (terrain_quantity, 0) (level, 0) }
+{ (row, 3) (column, 23) (terrain_quantity, 0) (level, 3) }
+{ (row, 3) (column, 24) (terrain_quantity, 0) (level, 3) }
+
+{ (row, 4) (column, 0) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 1) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 2) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 3) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 4) (terrain_quantity, 1) (terrain_0, "heavy woods") (level, 0) }
+{ (row, 4) (column, 5) (terrain_quantity, 1) (terrain_0, "light woods") (level, 0) }
+{ (row, 4) (column, 6) (terrain_quantity, 2) (terrain_0, "river") (terrain_1, "light woods") (level, 0) }
+{ (row, 4) (column, 7) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 8) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 9) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 10) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 11) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 12) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 13) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 14) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 15) (terrain_quantity, 2) (terrain_0, "river") (terrain_1, "light woods") (level, 0) }
+{ (row, 4) (column, 16) (terrain_quantity, 1) (terrain_0, "light woods") (level, 0) }
+{ (row, 4) (column, 17) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 18) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 19) (terrain_quantity, 0) (level, 0) }
+{ (row, 4) (column, 20) (terrain_quantity, 1) (terrain_0, "heavy woods") (level, 0) }
+{ (row, 4) (column, 21) (terrain_quantity, 1) (terrain_0, "heavy woods") (level, 0) }
+{ (row, 4) (column, 22) (terrain_quantity, 0) (level, 2) }
+{ (row, 4) (column, 23) (terrain_quantity, 0) (level, 2) }
+{ (row, 4) (column, 24) (terrain_quantity, 0) (level, 2) }
+
+{ (row, 5) (column, 0) (terrain_quantity, 0) (level, 0) }
+{ (row, 5) (column, 1) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 5) (column, 2) (terrain_quantity, 2) (terrain_0, "river") (terrain_1, "light woods") (level, 0) }
+{ (row, 5) (column, 3) (terrain_quantity, 2) (terrain_0, "river") (terrain_1, "light woods") (level, 0) }
+{ (row, 5) (column, 4) (terrain_quantity, 1) (terrain_0, "light woods") (level, 0) }
+{ (row, 5) (column, 5) (terrain_quantity, 2) (terrain_0, "river") (terrain_1, "light woods") (level, 0) }
+{ (row, 5) (column, 6) (terrain_quantity, 2) (terrain_0, "river") (terrain_1, "light woods") (level, 0) }
+{ (row, 5) (column, 7) (terrain_quantity, 0) (level, 0) }
+{ (row, 5) (column, 8) (terrain_quantity, 0) (level, 0) }
+{ (row, 5) (column, 9) (terrain_quantity, 0) (level, 0) }
+{ (row, 5) (column, 10) (terrain_quantity, 0) (level, 0) }
+{ (row, 5) (column, 11) (terrain_quantity, 0) (level, 0) }
+{ (row, 5) (column, 12) (terrain_quantity, 0) (level, 0) }
+{ (row, 5) (column, 13) (terrain_quantity, 2) (terrain_0, "river") (terrain_1, "light woods") (level, 0) }
+{ (row, 5) (column, 14) (terrain_quantity, 2) (terrain_0, "river") (terrain_1, "light woods") (level, 0) }
+{ (row, 5) (column, 15) (terrain_quantity, 0) (level, 0) }
+{ (row, 5) (column, 16) (terrain_quantity, 1) (terrain_0, "light woods") (level, 0) }
+{ (row, 5) (column, 17) (terrain_quantity, 0) (level, 0) }
+{ (row, 5) (column, 18) (terrain_quantity, 0) (level, 0) }
+{ (row, 5) (column, 19) (terrain_quantity, 0) (level, 0) }
+{ (row, 5) (column, 20) (terrain_quantity, 1) (terrain_0, "heavy woods") (level, 0) }
+{ (row, 5) (column, 21) (terrain_quantity, 1) (terrain_0, "heavy woods") (level, 0) }
+{ (row, 5) (column, 22) (terrain_quantity, 1) (terrain_0, "light woods") (level, 0) }
+{ (row, 5) (column, 23) (terrain_quantity, 0) (level, 2) }
+{ (row, 5) (column, 24) (terrain_quantity, 0) (level, 0) }
+
+{ (row, 6) (column, 0) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 6) (column, 1) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 2) (terrain_quantity, 1) (terrain_0, "light woods") (level, 0) }
+{ (row, 6) (column, 3) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 4) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 5) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 6) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 7) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 8) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 9) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 10) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 11) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 12) (terrain_quantity, 2) (terrain_0, "river") (terrain_1, "light woods") (level, 0) }
+{ (row, 6) (column, 13) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 14) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 15) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 16) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 17) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 18) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 19) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 20) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 21) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 22) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 23) (terrain_quantity, 0) (level, 0) }
+{ (row, 6) (column, 24) (terrain_quantity, 0) (level, 0) }
+
+{ (row, 7) (column, 0) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 1) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 2) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 3) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 4) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 5) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 6) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 7) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 8) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 9) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 10) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 11) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 12) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 7) (column, 13) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 14) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 15) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 16) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 17) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 18) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 19) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 20) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 21) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 22) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 23) (terrain_quantity, 0) (level, 0) }
+{ (row, 7) (column, 24) (terrain_quantity, 0) (level, 0) }
+
+{ (row, 8) (column, 0) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 1) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 2) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 3) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 4) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 5) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 6) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 7) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 8) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 9) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 10) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 11) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 12) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 8) (column, 13) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 14) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 15) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 16) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 17) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 18) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 19) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 20) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 21) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 22) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 23) (terrain_quantity, 0) (level, 0) }
+{ (row, 8) (column, 24) (terrain_quantity, 0) (level, 0) }
+
+{ (row, 9) (column, 0) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 1) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 2) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 3) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 4) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 5) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 6) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 7) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 8) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 9) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 10) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 11) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 12) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 9) (column, 13) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 14) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 15) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 16) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 17) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 18) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 19) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 20) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 21) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 22) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 23) (terrain_quantity, 0) (level, 0) }
+{ (row, 9) (column, 24) (terrain_quantity, 0) (level, 0) }
+
+{ (row, 10) (column, 0) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 1) (terrain_quantity, 0) (level, 2) }
+{ (row, 10) (column, 2) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 3) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 4) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 5) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 6) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 7) (terrain_quantity, 0) (level, 3) }
+{ (row, 10) (column, 8) (terrain_quantity, 0) (level, 3) }
+{ (row, 10) (column, 9) (terrain_quantity, 0) (level, 3) }
+{ (row, 10) (column, 10) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 11) (terrain_quantity, 0) (level, 1) }
+{ (row, 10) (column, 12) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 10) (column, 13) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 14) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 15) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 16) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 17) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 18) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 19) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 20) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 21) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 22) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 23) (terrain_quantity, 0) (level, 0) }
+{ (row, 10) (column, 24) (terrain_quantity, 0) (level, 0) }
+
+{ (row, 11) (column, 0) (terrain_quantity, 0) (level, 0) }
+{ (row, 11) (column, 1) (terrain_quantity, 0) (level, 3) }
+{ (row, 11) (column, 2) (terrain_quantity, 0) (level, 3) }
+{ (row, 11) (column, 3) (terrain_quantity, 0) (level, 3) }
+{ (row, 11) (column, 4) (terrain_quantity, 0) (level, 3) }
+{ (row, 11) (column, 5) (terrain_quantity, 0) (level, 3) }
+{ (row, 11) (column, 6) (terrain_quantity, 0) (level, 3) }
+{ (row, 11) (column, 7) (terrain_quantity, 0) (level, 4) }
+{ (row, 11) (column, 8) (terrain_quantity, 0) (level, 4) }
+{ (row, 11) (column, 9) (terrain_quantity, 0) (level, 2) }
+{ (row, 11) (column, 10) (terrain_quantity, 0) (level, 2) }
+{ (row, 11) (column, 11) (terrain_quantity, 0) (level, 2) }
+{ (row, 11) (column, 12) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 11) (column, 13) (terrain_quantity, 0) (level, 0) }
+{ (row, 11) (column, 14) (terrain_quantity, 0) (level, 0) }
+{ (row, 11) (column, 15) (terrain_quantity, 0) (level, 0) }
+{ (row, 11) (column, 16) (terrain_quantity, 0) (level, 0) }
+{ (row, 11) (column, 17) (terrain_quantity, 0) (level, 0) }
+{ (row, 11) (column, 18) (terrain_quantity, 0) (level, 0) }
+{ (row, 11) (column, 19) (terrain_quantity, 0) (level, 0) }
+{ (row, 11) (column, 20) (terrain_quantity, 0) (level, 0) }
+{ (row, 11) (column, 21) (terrain_quantity, 0) (level, 0) }
+{ (row, 11) (column, 22) (terrain_quantity, 0) (level, 0) }
+{ (row, 11) (column, 23) (terrain_quantity, 0) (level, 0) }
+{ (row, 11) (column, 24) (terrain_quantity, 0) (level, 0) }
+
+{ (row, 12) (column, 0) (terrain_quantity, 0) (level, 0) }
+{ (row, 12) (column, 1) (terrain_quantity, 0) (level, 0) }
+{ (row, 12) (column, 2) (terrain_quantity, 0) (level, 3) }
+{ (row, 12) (column, 3) (terrain_quantity, 0) (level, 3) }
+{ (row, 12) (column, 4) (terrain_quantity, 0) (level, 3) }
+{ (row, 12) (column, 5) (terrain_quantity, 0) (level, 3) }
+{ (row, 12) (column, 6) (terrain_quantity, 0) (level, 4) }
+{ (row, 12) (column, 7) (terrain_quantity, 0) (level, 3) }
+{ (row, 12) (column, 8) (terrain_quantity, 0) (level, 1) }
+{ (row, 12) (column, 9) (terrain_quantity, 0) (level, 0) }
+{ (row, 12) (column, 10) (terrain_quantity, 0) (level, 2) }
+{ (row, 12) (column, 11) (terrain_quantity, 0) (level, 2) }
+{ (row, 12) (column, 12) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 12) (column, 13) (terrain_quantity, 0) (level, 0) }
+{ (row, 12) (column, 14) (terrain_quantity, 0) (level, 0) }
+{ (row, 12) (column, 15) (terrain_quantity, 0) (level, 0) }
+{ (row, 12) (column, 16) (terrain_quantity, 0) (level, 0) }
+{ (row, 12) (column, 17) (terrain_quantity, 0) (level, 0) }
+{ (row, 12) (column, 18) (terrain_quantity, 0) (level, 0) }
+{ (row, 12) (column, 19) (terrain_quantity, 0) (level, 0) }
+{ (row, 12) (column, 20) (terrain_quantity, 0) (level, 0) }
+{ (row, 12) (column, 21) (terrain_quantity, 0) (level, 0) }
+{ (row, 12) (column, 22) (terrain_quantity, 0) (level, 0) }
+{ (row, 12) (column, 23) (terrain_quantity, 0) (level, 0) }
+{ (row, 12) (column, 24) (terrain_quantity, 0) (level, 0) }
+
+{ (row, 13) (column, 0) (terrain_quantity, 0) (level, 0) }
+{ (row, 13) (column, 2) (terrain_quantity, 0) (level, 0) }
+{ (row, 13) (column, 4) (terrain_quantity, 0) (level, 0) }
+{ (row, 13) (column, 6) (terrain_quantity, 0) (level, 2) }
+{ (row, 13) (column, 8) (terrain_quantity, 0) (level, 0) }
+{ (row, 13) (column, 10) (terrain_quantity, 0) (level, 0) }
+{ (row, 13) (column, 12) (terrain_quantity, 1) (terrain_0, "river") (level, 0) }
+{ (row, 13) (column, 14) (terrain_quantity, 0) (level, 0) }
+{ (row, 13) (column, 16) (terrain_quantity, 0) (level, 0) }
+{ (row, 13) (column, 18) (terrain_quantity, 0) (level, 0) }
+{ (row, 13) (column, 20) (terrain_quantity, 0) (level, 0) }
+{ (row, 13) (column, 22) (terrain_quantity, 0) (level, 0) }
+{ (row, 13) (column, 24) (terrain_quantity, 0) (level, 0) }
 
 ** metadata end **

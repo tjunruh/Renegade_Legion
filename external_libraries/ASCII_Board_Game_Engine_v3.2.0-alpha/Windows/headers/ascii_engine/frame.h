@@ -76,12 +76,11 @@ private:
 		int widget_type = WIDGET;
 		int x_origin = -1;
 		int y_origin = -1;
-		unsigned int lines_count = 0;
 		int level = 0;
 		float width_multiplier = 1.0;
 		bool selectable = false;
 		unsigned int top_line = 0;
-		unsigned int displayed_lines = 0;
+		unsigned int displayed_lines_count = 0;
 		unsigned int line_subtraction_from_terminal_height = 0;
 		unsigned int line_compression_amount = 0;
 		unsigned int left_column = 0;
@@ -103,7 +102,6 @@ private:
 	void unhighlight(int row, int column, int level);
 	void keep_point_in_console_bounds(int& x, int& y);
 	int get_levels(int row, int column);
-	int get_lines_count(int id, unsigned int& lines_count, bool only_displayed=true);
 	float get_greatest_width_multiplier_at_coordinate(int row, int column);
 	float get_width_weight(const widget_info* const item, float multiplier);
 	int generate_widget_id();
@@ -179,7 +177,4 @@ private:
 	int last_selected_column = 0;
 	int selected_level = 0;
 	int last_selected_level = 0;
-#ifdef WIN32
-	std::string previous_output = "";
-#endif
 };

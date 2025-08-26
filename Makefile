@@ -5,7 +5,7 @@ EXECUTABLE ?= renegade_legion
 
 SRC_DIR ?= Code
 BLD_DIR ?= build
-ASCII_ENGINE_DIR ?= ASCII_Board_Game_Engine_v3.1.0-alpha
+ASCII_ENGINE_DIR ?= ASCII_Board_Game_Engine_v3.2.0-alpha
 INC_DIR := $(shell find $(SRC_DIR) -type d)
 
 SRCS := $(shell find $(SRC_DIR) -name *.cpp)

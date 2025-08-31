@@ -49,7 +49,9 @@ public:
 		std::string range = "";
 	};
 
+	void set_id(int id);
 	void set_name(const std::string& name);
+	int set_player(int player);
 	int set_number(int number);
 	int set_row(int row);
 	int set_column(int column);
@@ -74,11 +76,17 @@ public:
 	int set_bottom_armor_thickness(int thickness);
 	void set_faction(const std::string& faction);
 	void set_cost(float cost);
+	int set_turret_direction(int direction);
+	int set_tank_direction(int direction);
 	int apply_damage(const std::string& side, int column, const std::vector<weapons::damage_coordinate>& damage);
+	int get_id();
 	std::string get_name();
+	int get_player();
 	int get_number();
 	int get_row();
 	int get_column();
+	int get_previous_row();
+	int get_previous_column();
 	int get_smlm_missle_count();
 	int get_tvlg_missle_count();
 	int get_stern_shield_factor();
@@ -97,6 +105,10 @@ public:
 	int get_front_armor_thickness();
 	int get_right_armor_thickness();
 	int get_bottom_armor_thickness();
+	int get_turret_direction();
+	int get_tank_direction();
+	int get_previous_turret_direction();
+	int get_previous_tank_direction();
 	std::string get_faction();
 	float get_cost();
 	damage_record get_damage_record();
@@ -111,9 +123,13 @@ private:
 	void apply_bottom_damage(int column, const std::vector<weapons::damage_coordinate>& damage);
 
 	std::string _name = "";
+	int _player = -1;
 	int _number = -1;
 	int _row = 0;
 	int _column = 0;
+	int last_row = 0;
+	int last_column = 0;
+	int _id = 0;
 	int smlm_missle_count = 0;
 	int tvlg_missle_count = 0;
 	int stern_shield_factor = 0;
@@ -132,6 +148,10 @@ private:
 	int front_armor_thickness = 0;
 	int right_armor_thickness = 0;
 	int bottom_armor_thickness = 0;
+	int turret_direction = 0;
+	int tank_direction = 0;
+	int previous_turret_direction = 0;
+	int previous_tank_direction = 0;
 	std::string _faction = "";
 	float _cost = 0.0;
 	damage_record total_damage;

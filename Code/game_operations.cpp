@@ -6,7 +6,7 @@
 #include <chrono>
 
 
-game_operations::game_operations(frame* tank_view_display, frame* tank_damage_display, frame* scenario_setup_display, frame* tank_fleet_display) : display_manager(tank_view_display, tank_damage_display, scenario_setup_display, tank_fleet_display)
+game_operations::game_operations(frame* tank_view_display, frame* tank_damage_display, frame* scenario_setup_display, frame* tank_fleet_display, frame* board_display) : display_manager(tank_view_display, tank_damage_display, scenario_setup_display, tank_fleet_display, board_display)
 {
 	tank_templates = logic_manager.get_tank_templates();
 }
@@ -190,4 +190,38 @@ void game_operations::run_new_game_setup()
 		std::string faction = "none";
 		display_manager.display_tank_fleet_setup(budget, faction_mixing_allowed, tank_templates, player_name, faction, tank_fleet);
 	}
+}
+
+void game_operations::run_test_board()
+{
+	int row = 0;
+	int column = 0;
+	std::vector<int> quit_keys =
+	{
+		ascii_io::q
+	};
+
+	tank tank_1 = tank_templates[0];
+	tank tank_2 = tank_templates[1];
+
+	tank_1.set_row(0);
+	tank_1.set_column(0);
+
+	tank_1.set_tank_direction(4);
+	tank_1.set_turret_direction(3);
+	tank_1.set_player(1);
+
+	tank_2.set_row(5);
+	tank_2.set_column(5);
+	tank_2.set_tank_direction(1);
+	tank_2.set_turret_direction(1);
+	tank_2.set_player(2);
+
+	std::vector<tank> tanks;
+	tanks.push_back(tank_1);
+	tanks.push_back(tank_2);
+
+	display_manager.update_tanks(tanks);
+
+	display_manager.scroll_board(row, column, quit_keys);
 }

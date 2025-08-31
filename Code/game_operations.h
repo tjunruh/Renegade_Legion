@@ -8,9 +8,10 @@
 class game_operations
 {
 public:
-	game_operations(frame* tank_view_display, frame* tank_damage_display, frame* scenario_setup_display, frame* tank_fleet_display);
+	game_operations(frame* tank_view_display, frame* tank_damage_display, frame* scenario_setup_display, frame* tank_fleet_display, frame* board_display);
 	void run_tank_view();
 	void run_new_game_setup();
+	void run_test_board();
 
 private:
 	display display_manager;

@@ -3,15 +3,32 @@
 #include <ascii_engine/error_codes.h>
 #include <algorithm>
 
+void tank::set_id(int id)
+{
+	_id = id;
+}
+
 void tank::set_name(const std::string& name)
 {
 	_name = name;
 }
 
+int tank::set_player(int player)
+{
+	int status = INVALID_VALUE;
+	if (player == 1 || player == 2)
+	{
+		_player = player;
+		status = SUCCESS;
+	}
+
+	return status;
+}
+
 int tank::set_number(int number)
 {
 	int status = INVALID_VALUE;
-	if (number >= 0)
+	if (number > 0)
 	{
 		_number = number;
 		status = SUCCESS;
@@ -25,6 +42,7 @@ int tank::set_row(int row)
 	int status = INVALID_VALUE;
 	if (row >= 0)
 	{
+		last_row = _row;
 		_row = row;
 		status = SUCCESS;
 	}
@@ -37,6 +55,7 @@ int tank::set_column(int column)
 	int status = INVALID_VALUE;
 	if (column >= 0)
 	{
+		last_column = column;
 		_column = column;
 		status = SUCCESS;
 	}
@@ -298,6 +317,32 @@ void tank::set_cost(float cost)
 	_cost = cost;
 }
 
+int tank::set_turret_direction(int direction)
+{
+	int status = INVALID_VALUE;
+	if (direction >= 1 && direction <= 6)
+	{
+		previous_turret_direction = tank_direction;
+		turret_direction = direction;
+		status = SUCCESS;
+	}
+
+	return status;
+}
+
+int tank::set_tank_direction(int direction)
+{
+	int status = INVALID_VALUE;
+	if (direction >= 1 && direction <= 6)
+	{
+		previous_tank_direction = tank_direction;
+		tank_direction = direction;
+		status = SUCCESS;
+	}
+
+	return status;
+}
+
 int tank::apply_damage(const std::string& side, int column, const std::vector<weapons::damage_coordinate>& damage)
 {
 	int status = INVALID_VALUE;
@@ -337,9 +382,19 @@ int tank::apply_damage(const std::string& side, int column, const std::vector<we
 	return status;
 }
 
+int tank::get_id()
+{
+	return _id;
+}
+
 std::string tank::get_name()
 {
 	return _name;
+}
+
+int tank::get_player()
+{
+	return _player;
 }
 
 int tank::get_number()
@@ -355,6 +410,16 @@ int tank::get_row()
 int tank::get_column()
 {
 	return _column;
+}
+
+int tank::get_previous_row()
+{
+	return last_row;
+}
+
+int tank::get_previous_column()
+{
+	return last_column;
 }
 
 int tank::get_smlm_missle_count()
@@ -445,6 +510,26 @@ int tank::get_right_armor_thickness()
 int tank::get_bottom_armor_thickness()
 {
 	return bottom_armor_thickness;
+}
+
+int tank::get_turret_direction()
+{
+	return turret_direction;
+}
+
+int tank::get_tank_direction()
+{
+	return tank_direction;
+}
+
+int tank::get_previous_turret_direction()
+{
+	return previous_turret_direction;
+}
+
+int tank::get_previous_tank_direction()
+{
+	return previous_tank_direction;
 }
 
 std::string tank::get_faction()

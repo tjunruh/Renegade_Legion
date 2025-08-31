@@ -13,7 +13,8 @@ int main()
     frame* tank_stats_frame = new frame();
     frame* scenario_setup_frame = new frame();
     frame* tank_fleet_setup_display = new frame();
-    game_operations game_manager(tank_view_frame, tank_stats_frame, scenario_setup_frame, tank_fleet_setup_display);
+    frame* board_display = new frame();
+    game_operations game_manager(tank_view_frame, tank_stats_frame, scenario_setup_frame, tank_fleet_setup_display, board_display);
     std::string logo_text = "";
     file_manager::read_file("text_images/logo.txt", logo_text);
     label logo(home_frame);
@@ -26,6 +27,7 @@ int main()
     initialization_menu.append_item("New Game");
     initialization_menu.append_item("Load Game");
     initialization_menu.append_item("View Tanks");
+    initialization_menu.append_item("Test Board");
     initialization_menu.append_item("Exit");
     initialization_menu.build();
 
@@ -46,6 +48,10 @@ int main()
         {
             game_manager.run_new_game_setup();
         }
+        else if (selection == "Test Board")
+        {
+            game_manager.run_test_board();
+        }
 
     } while (selection != "Exit");
 
@@ -54,6 +60,7 @@ int main()
     delete(tank_stats_frame);
     delete(scenario_setup_frame);
     delete(tank_fleet_setup_display);
+    delete(board_display);
     ascii_io::show_cursor();
     ascii_io::ascii_engine_end();
 }

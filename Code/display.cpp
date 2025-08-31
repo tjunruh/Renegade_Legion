@@ -8,7 +8,7 @@
 #include <thread>
 #include <chrono>
 
-display::display(frame* tank_view_display, frame* tank_damage_display, frame* scenario_setup_display, frame* tank_fleet_setup_display) :
+display::display(frame* tank_view_display, frame* tank_damage_display, frame* scenario_setup_display, frame* tank_fleet_setup_display, frame* board_display) :
 	tank_image_one(tank_view_display),
 	tank_image_two(tank_view_display),
 
@@ -36,17 +36,21 @@ display::display(frame* tank_view_display, frame* tank_damage_display, frame* sc
 	budget_data(tank_fleet_setup_display, "merge", 1),
 	fleet_cost_data(tank_fleet_setup_display, "merge", 1),
 	tank_fleet_setup_spacer(tank_fleet_setup_display, "merge", -37),
-	finalize_fleet_setup(tank_fleet_setup_display, "merge", 1)
+	finalize_fleet_setup(tank_fleet_setup_display, "merge", 1),
+
+	board(board_display, "board_configs/board_3_config.txt", "3", "none", -2)
 {
 	tank_view_frame = tank_view_display;
 	tank_damage_frame = tank_damage_display;
 	scenario_setup_frame = scenario_setup_display;
 	tank_fleet_setup_frame = tank_fleet_setup_display;
+	board_frame = board_display;
 
 	setup_tank_view();
 	setup_tank_stats();
 	setup_scenario_setup();
 	setup_tank_fleet_setup();
+	setup_board();
 }
 
 void display::display_tank_view(const std::string& tank_name, const std::string& tank_side)
@@ -57,7 +61,6 @@ void display::display_tank_view(const std::string& tank_name, const std::string&
 	ascii_io::zoom_to_level(-6, 300);
 #endif
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 	for (unsigned int i = 0; i < tank_views.size(); i++)
 	{
 		if (tank_views[i].name == tank_name)
@@ -78,6 +81,7 @@ void display::display_tank_view(const std::string& tank_name, const std::string&
 			break;
 		}
 	}
+
 #ifdef __linux__
 	ascii_io::guarantee_clear_on_next_display();
 #endif
@@ -94,7 +98,6 @@ void display::display_tank_view(const std::string& tank_one_name, const std::str
 	ascii_io::zoom_to_level(-6, 300);
 #endif
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 	for (unsigned int i = 0; i < tank_views.size(); i++)
 	{
 		if (tank_views[i].name == tank_one_name)
@@ -136,6 +139,7 @@ void display::display_tank_view(const std::string& tank_one_name, const std::str
 			break;
 		}
 	}
+
 #ifdef __linux__
 	ascii_io::guarantee_clear_on_next_display();
 #endif
@@ -192,8 +196,6 @@ void display::display_tank_stats(tank& tank_data)
 #elif __linux__
 	ascii_io::zoom_to_level(-4, 300);
 #endif
-
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
 	tank_stats.clear_all();
 	tank_stats.set_tile(22, 0, tank_data.get_name());
@@ -374,8 +376,8 @@ void display::display_tank_stats(tank& tank_data)
 	}
 
 	tank_stats.build();
-	tank_damage_frame->display();
 
+	tank_damage_frame->display();
 }
 
 void display::display_scenario_setup(unsigned int& number_of_players, int& budget, bool& faction_mixing_allowed)
@@ -419,7 +421,6 @@ void display::display_scenario_setup(unsigned int& number_of_players, int& budge
 
 void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, std::vector<tank>& tank_templates, std::string& player_name, std::string& faction, std::vector<tank>& tank_fleet)
 {
-	ascii_io::zoom_to_level(0, 300);
 	faction = "Renegade";
 	std::string tog_symbol = "";
 	std::string renegade_symbol = "";
@@ -662,7 +663,104 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 			}
 		}
 	}
+}
 
+int display::scroll_board(int& row, int& column, const std::vector<int>& select_keys)
+{
+	int input = ascii_io::undefined;
+	board_frame->display();
+	do
+	{
+		input = ascii_io::getchar();
+		if (input == ascii_io::up && (cursor_row - 1 >= 0))
+		{
+			board.deactivate_configuration("cursor", cursor_row, cursor_column);
+			cursor_row = cursor_row - 1;
+			board.activate_configuration("cursor", cursor_row, cursor_column);
+			board.bring_tile_into_view(cursor_row, cursor_column, 1, 1, 1, 1);
+			board.build();
+			board.display();
+		}
+		else if (input == ascii_io::down && (cursor_row + 1 < board.get_number_of_rows()))
+		{
+			board.deactivate_configuration("cursor", cursor_row, cursor_column);
+			cursor_row = cursor_row + 1;
+			board.activate_configuration("cursor", cursor_row, cursor_column);
+			board.bring_tile_into_view(cursor_row, cursor_column, 1, 1, 1, 1);
+			board.build();
+			board.display();
+		}
+		else if (input == ascii_io::right && (cursor_column + 1 < board.get_number_of_columns()))
+		{
+			board.deactivate_configuration("cursor", cursor_row, cursor_column);
+			cursor_column = cursor_column + 1;
+			board.activate_configuration("cursor", cursor_row, cursor_column);
+			board.bring_tile_into_view(cursor_row, cursor_column, 1, 1, 1, 1);
+			board.build();
+			board.display();
+		}
+		else if (input == ascii_io::left && (cursor_column - 1 >= 0))
+		{
+			board.deactivate_configuration("cursor", cursor_row, cursor_column);
+			cursor_column = cursor_column - 1;
+			board.activate_configuration("cursor", cursor_row, cursor_column);
+			board.bring_tile_into_view(cursor_row, cursor_column, 1, 1, 1, 1);
+			board.build();
+			board.display();
+		}
+
+	} while (std::count(select_keys.begin(), select_keys.end(), input) == 0);
+
+	row = cursor_row;
+	column = cursor_column;
+	return input;
+}
+
+void display::set_cursor_tile(int row, int column)
+{
+	if ((row >= 0) && (row < board.get_number_of_rows()) && (column >= 0) && (column < board.get_number_of_columns()))
+	{
+		last_cursor_row = cursor_row;
+		last_cursor_column = cursor_column;
+		cursor_row = row;
+		cursor_column = column;
+	}
+}
+
+void display::display_board()
+{
+	board_frame->display();
+}
+
+void display::update_tanks(std::vector<tank>& tanks)
+{
+	for (unsigned int i = 0; i < tanks.size(); i++)
+	{
+		board.deactivate_configuration(tanks[i].get_name() + " " + std::to_string(tanks[i].get_player()), tanks[i].get_previous_row(), tanks[i].get_previous_column());
+		if (tanks[i].get_previous_tank_direction() != tanks[i].get_previous_turret_direction())
+		{
+			board.deactivate_configuration(direction_to_tank_arrow(tanks[i].get_previous_tank_direction()), tanks[i].get_previous_row(), tanks[i].get_previous_column());
+			board.deactivate_configuration(direction_to_turret_arrow(tanks[i].get_previous_turret_direction()), tanks[i].get_previous_row(), tanks[i].get_previous_column());
+		}
+		else
+		{
+			board.deactivate_configuration(direction_to_both_arrow(tanks[i].get_previous_tank_direction()), tanks[i].get_previous_row(), tanks[i].get_previous_column());
+		}
+	}
+
+	for (unsigned int i = 0; i < tanks.size(); i++)
+	{
+		board.activate_configuration(tanks[i].get_name() + " " + std::to_string(tanks[i].get_player()), tanks[i].get_row(), tanks[i].get_column());
+		if (tanks[i].get_tank_direction() != tanks[i].get_turret_direction())
+		{
+			board.activate_configuration(direction_to_tank_arrow(tanks[i].get_tank_direction()), tanks[i].get_row(), tanks[i].get_column());
+			board.activate_configuration(direction_to_turret_arrow(tanks[i].get_turret_direction()), tanks[i].get_row(), tanks[i].get_column());
+		}
+		else
+		{
+			board.activate_configuration(direction_to_both_arrow(tanks[i].get_tank_direction()), tanks[i].get_row(), tanks[i].get_column());
+		}
+	}
 }
 
 board_configuration display::build_damage_config(const std::string& name_id, const std::string& value, char ignore_character, const std::vector<format_tools::index_format>& colors)
@@ -881,6 +979,73 @@ void display::setup_tank_fleet_setup()
 	finalize_fleet_setup.set_selectable(true);
 }
 
+void display::setup_board()
+{
+	board_frame->enable_color(true);
+	std::string up_arrow = board.load_configuration("board_configs/up_arrow_config.txt");
+	std::string down_arrow = board.load_configuration("board_configs/down_arrow_config.txt");
+	std::string up_right_arrow = board.load_configuration("board_configs/up_right_arrow_config.txt");
+	std::string up_left_arrow = board.load_configuration("board_configs/up_left_arrow_config.txt");
+	std::string down_right_arrow = board.load_configuration("board_configs/down_right_arrow_config.txt");
+	std::string down_left_arrow = board.load_configuration("board_configs/down_left_arrow_config.txt");
+
+	std::string aeneas_value = board.load_configuration("board_configs/aeneas.txt");
+	std::string horatius_value = board.load_configuration("board_configs/horatius.txt");
+	std::string liberator_value = board.load_configuration("board_configs/liberator.txt");
+	std::string lupis_value = board.load_configuration("board_configs/lupis.txt");
+	std::string remus_value = board.load_configuration("board_configs/remus.txt");
+	std::string romulus_value = board.load_configuration("board_configs/romulus.txt");
+	std::string spartius_value = board.load_configuration("board_configs/spartius.txt");
+	std::string viper_value = board.load_configuration("board_configs/viper.txt");
+	std::string wolverine_value = board.load_configuration("board_configs/wolverine.txt");
+
+	std::string cursor_value = board.load_configuration("board_configs/cursor_config.txt");
+
+	board.add_configuration("tank up", -1, -1, up_arrow, '*', format_tools::build_color_for_value(up_arrow, '*', format_tools::cyan, format_tools::none, false));
+	board.add_configuration("tank down", -1, -1, down_arrow, '*', format_tools::build_color_for_value(down_arrow, '*', format_tools::cyan, format_tools::none, false));
+	board.add_configuration("tank up right", -1, -1, up_right_arrow, '*', format_tools::build_color_for_value(up_right_arrow, '*', format_tools::cyan, format_tools::none, false));
+	board.add_configuration("tank up left", -1, -1, up_left_arrow, '*', format_tools::build_color_for_value(up_left_arrow, '*', format_tools::cyan, format_tools::none, false));
+	board.add_configuration("tank down right", -1, -1, down_right_arrow, '*', format_tools::build_color_for_value(down_right_arrow, '*', format_tools::cyan, format_tools::none, false));
+	board.add_configuration("tank down left", -1, -1, down_left_arrow, '*', format_tools::build_color_for_value(down_left_arrow, '*', format_tools::cyan, format_tools::none, false));
+
+	board.add_configuration("turret up", -1, -1, up_arrow, '*', format_tools::build_color_for_value(up_arrow, '*', format_tools::magenta, format_tools::none, false));
+	board.add_configuration("turret down", -1, -1, down_arrow, '*', format_tools::build_color_for_value(down_arrow, '*', format_tools::magenta, format_tools::none, false));
+	board.add_configuration("turret up right", -1, -1, up_right_arrow, '*', format_tools::build_color_for_value(up_right_arrow, '*', format_tools::magenta, format_tools::none, false));
+	board.add_configuration("turret up left", -1, -1, up_left_arrow, '*', format_tools::build_color_for_value(up_left_arrow, '*', format_tools::magenta, format_tools::none, false));
+	board.add_configuration("turret down right", -1, -1, down_right_arrow, '*', format_tools::build_color_for_value(down_right_arrow, '*', format_tools::magenta, format_tools::none, false));
+	board.add_configuration("turret down left", -1, -1, down_left_arrow, '*', format_tools::build_color_for_value(down_left_arrow, '*', format_tools::magenta, format_tools::none, false));
+
+
+	board.add_configuration("both up", -1, -1, up_arrow, '*', format_tools::build_color_for_value(up_arrow, '*', format_tools::yellow, format_tools::none, false));
+	board.add_configuration("both down", -1, -1, down_arrow, '*', format_tools::build_color_for_value(down_arrow, '*', format_tools::yellow, format_tools::none, false));
+	board.add_configuration("both up right", -1, -1, up_right_arrow, '*', format_tools::build_color_for_value(up_right_arrow, '*', format_tools::yellow, format_tools::none, false));
+	board.add_configuration("both up left", -1, -1, up_left_arrow, '*', format_tools::build_color_for_value(up_left_arrow, '*', format_tools::yellow, format_tools::none, false));
+	board.add_configuration("both down right", -1, -1, down_right_arrow, '*', format_tools::build_color_for_value(down_right_arrow, '*', format_tools::yellow, format_tools::none, false));
+	board.add_configuration("both down left", -1, -1, down_left_arrow, '*', format_tools::build_color_for_value(down_left_arrow, '*', format_tools::yellow, format_tools::none, false));
+
+	board.add_configuration("Aeneas 1", -1, -1, aeneas_value, '*', format_tools::build_color_for_value(aeneas_value, '*', format_tools::blue, format_tools::none, false));
+	board.add_configuration("Horatius 1", -1, -1, horatius_value, '*', format_tools::build_color_for_value(horatius_value, '*', format_tools::blue, format_tools::none, false));
+	board.add_configuration("Liberator 1", -1, -1, liberator_value, '*', format_tools::build_color_for_value(liberator_value, '*', format_tools::blue, format_tools::none, false));
+	board.add_configuration("Lupis 1", -1, -1, lupis_value, '*', format_tools::build_color_for_value(lupis_value, '*', format_tools::blue, format_tools::none, false));
+	board.add_configuration("Remus 1", -1, -1, remus_value, '*', format_tools::build_color_for_value(remus_value, '*', format_tools::blue, format_tools::none, false));
+	board.add_configuration("Romulus 1", -1, -1, romulus_value, '*', format_tools::build_color_for_value(romulus_value, '*', format_tools::blue, format_tools::none, false));
+	board.add_configuration("Spartius 1", -1, -1, spartius_value, '*', format_tools::build_color_for_value(spartius_value, '*', format_tools::blue, format_tools::none, false));
+	board.add_configuration("Viper 1", -1, -1, viper_value, '*', format_tools::build_color_for_value(viper_value, '*', format_tools::blue, format_tools::none, false));
+	board.add_configuration("Wolverine 1", -1, -1, wolverine_value, '*', format_tools::build_color_for_value(wolverine_value, '*', format_tools::blue, format_tools::none, false));
+
+	board.add_configuration("Aeneas 2", -1, -1, aeneas_value, '*', format_tools::build_color_for_value(aeneas_value, '*', format_tools::red, format_tools::none, false));
+	board.add_configuration("Horatius 2", -1, -1, horatius_value, '*', format_tools::build_color_for_value(horatius_value, '*', format_tools::red, format_tools::none, false));
+	board.add_configuration("Liberator 2", -1, -1, liberator_value, '*', format_tools::build_color_for_value(liberator_value, '*', format_tools::red, format_tools::none, false));
+	board.add_configuration("Lupis 2", -1, -1, lupis_value, '*', format_tools::build_color_for_value(lupis_value, '*', format_tools::red, format_tools::none, false));
+	board.add_configuration("Remus 2", -1, -1, remus_value, '*', format_tools::build_color_for_value(remus_value, '*', format_tools::red, format_tools::none, false));
+	board.add_configuration("Romulus 2", -1, -1, romulus_value, '*', format_tools::build_color_for_value(romulus_value, '*', format_tools::red, format_tools::none, false));
+	board.add_configuration("Spartius 2", -1, -1, spartius_value, '*', format_tools::build_color_for_value(spartius_value, '*', format_tools::red, format_tools::none, false));
+	board.add_configuration("Viper 2", -1, -1, viper_value, '*', format_tools::build_color_for_value(viper_value, '*', format_tools::red, format_tools::none, false));
+	board.add_configuration("Wolverine 2", -1, -1, wolverine_value, '*', format_tools::build_color_for_value(wolverine_value, '*', format_tools::red, format_tools::none, false));
+
+	board.add_configuration("cursor", -1, -1, cursor_value, '*', format_tools::build_color_for_value(cursor_value, '*', format_tools::green, format_tools::none, true));
+}
+
 bool display::is_number(const std::string& number_string)
 {
 	bool number = true;
@@ -901,4 +1066,49 @@ bool display::is_number(const std::string& number_string)
 	}
 
 	return number;
+}
+
+std::string display::direction_to_tank_arrow(int direction)
+{
+	std::string arrow = "none";
+	for (unsigned int i = 0; i < direction_to_tank_arrow_map.size(); i++)
+	{
+		if (direction == direction_to_tank_arrow_map[i].direction)
+		{
+			arrow = direction_to_tank_arrow_map[i].arrow;
+			break;
+		}
+	}
+
+	return arrow;
+}
+
+std::string display::direction_to_turret_arrow(int direction)
+{
+	std::string arrow = "none";
+	for (unsigned int i = 0; i < direction_to_turret_arrow_map.size(); i++)
+	{
+		if (direction == direction_to_turret_arrow_map[i].direction)
+		{
+			arrow = direction_to_turret_arrow_map[i].arrow;
+			break;
+		}
+	}
+
+	return arrow;
+}
+
+std::string display::direction_to_both_arrow(int direction)
+{
+	std::string arrow = "none";
+	for (unsigned int i = 0; i < direction_to_both_arrow_map.size(); i++)
+	{
+		if (direction == direction_to_both_arrow_map[i].direction)
+		{
+			arrow = direction_to_both_arrow_map[i].arrow;
+			break;
+		}
+	}
+
+	return arrow;
 }

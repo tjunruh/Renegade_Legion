@@ -4,9 +4,7 @@
 #include <ascii_engine/format_tools.h>
 #include <ascii_engine/error_codes.h>
 #include "damage_code.h"
-#include <time.h>
-#include <thread>
-#include <chrono>
+#include <algorithm>
 
 display::display(frame* tank_view_display, frame* tank_damage_display, frame* scenario_setup_display, frame* tank_fleet_setup_display, frame* board_display) :
 	tank_image_one(tank_view_display),

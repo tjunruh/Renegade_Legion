@@ -23,6 +23,7 @@ public:
 	int scroll_board(int& row, int& column, const std::vector<int>& select_keys);
 	void set_cursor_tile(int row, int column);
 	void display_board();
+	void clear_board();
 	void update_tanks(std::vector<tank>& tanks);
 
 private:

@@ -666,6 +666,7 @@ void display::display_tank_fleet_setup(int budget, bool faction_mixing_allowed, 
 int display::scroll_board(int& row, int& column, const std::vector<int>& select_keys)
 {
 	int input = ascii_io::undefined;
+	ascii_io::zoom_to_level(-2, 300);
 	board_frame->display();
 	do
 	{
@@ -728,6 +729,12 @@ void display::set_cursor_tile(int row, int column)
 void display::display_board()
 {
 	board_frame->display();
+}
+
+void display::clear_board()
+{
+	board.clear_all();
+	board.build();
 }
 
 void display::update_tanks(std::vector<tank>& tanks)

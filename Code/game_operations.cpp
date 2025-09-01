@@ -200,7 +200,9 @@ void game_operations::run_test_board()
 	{
 		ascii_io::q,
 		ascii_io::enter,
-		ascii_io::ESC
+		ascii_io::ESC,
+		ascii_io::s,
+		ascii_io::v
 	};
 
 	tank tank_1 = tank_templates[0];
@@ -256,6 +258,18 @@ void game_operations::run_test_board()
 		{
 			selected_tank = -1;
 		}
+		else if (input == ascii_io::v && (selected_tank != -1))
+		{
+			display_manager.display_tank_view(tanks[selected_tank].get_name(), "top");
+			ascii_io::wait_for_keystroke({ ascii_io::q });
+		}
+		else if (input == ascii_io::s && (selected_tank != -1))
+		{
+			display_manager.display_tank_stats(tanks[selected_tank]);
+			ascii_io::wait_for_keystroke({ ascii_io::q });
+		}
 
 	} while (input != ascii_io::q);
+
+	display_manager.clear_board();
 }

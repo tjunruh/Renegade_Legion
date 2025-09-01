@@ -198,7 +198,9 @@ void game_operations::run_test_board()
 	int column = 0;
 	std::vector<int> quit_keys =
 	{
-		ascii_io::q
+		ascii_io::q,
+		ascii_io::enter,
+		ascii_io::ESC
 	};
 
 	tank tank_1 = tank_templates[0];
@@ -221,7 +223,39 @@ void game_operations::run_test_board()
 	tanks.push_back(tank_1);
 	tanks.push_back(tank_2);
 
+	int selected_tank = -1;
+
 	display_manager.update_tanks(tanks);
 
-	display_manager.scroll_board(row, column, quit_keys);
+	int input = ascii_io::undefined;
+	do
+	{
+		input = display_manager.scroll_board(row, column, quit_keys);
+		if (input == ascii_io::enter)
+		{
+			if (selected_tank == -1)
+			{
+				for (unsigned int i = 0; i < tanks.size(); i++)
+				{
+					if ((tanks[i].get_row() == row) && (tanks[i].get_column() == column))
+					{
+						selected_tank = i;
+						break;
+					}
+				}
+			}
+			else
+			{
+				tanks[selected_tank].set_row(row);
+				tanks[selected_tank].set_column(column);
+				selected_tank = -1;
+				display_manager.update_tanks(tanks);
+			}
+		}
+		else if (input == ascii_io::ESC)
+		{
+			selected_tank = -1;
+		}
+
+	} while (input != ascii_io::q);
 }

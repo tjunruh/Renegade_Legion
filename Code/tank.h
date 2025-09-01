@@ -79,6 +79,7 @@ public:
 	int set_turret_direction(int direction);
 	int set_tank_direction(int direction);
 	int apply_damage(const std::string& side, int column, const std::vector<weapons::damage_coordinate>& damage);
+	void acknowledge_position_changed();
 	int get_id();
 	std::string get_name();
 	int get_player();
@@ -113,6 +114,7 @@ public:
 	float get_cost();
 	damage_record get_damage_record();
 	std::vector<velocity_record_unit> get_velocity_record();
+	bool position_changed();
 
 private:
 	void apply_turret_damage(int column, const std::vector<weapons::damage_coordinate>& damage);
@@ -125,10 +127,10 @@ private:
 	std::string _name = "";
 	int _player = -1;
 	int _number = -1;
-	int _row = 0;
-	int _column = 0;
-	int last_row = 0;
-	int last_column = 0;
+	int _row = -1;
+	int _column = -1;
+	int last_row = -1;
+	int last_column = -1;
 	int _id = 0;
 	int smlm_missle_count = 0;
 	int tvlg_missle_count = 0;
@@ -148,14 +150,15 @@ private:
 	int front_armor_thickness = 0;
 	int right_armor_thickness = 0;
 	int bottom_armor_thickness = 0;
-	int turret_direction = 0;
-	int tank_direction = 0;
-	int previous_turret_direction = 0;
-	int previous_tank_direction = 0;
+	int turret_direction = -1;
+	int tank_direction = -1;
+	int previous_turret_direction = -1;
+	int previous_tank_direction = -1;
 	std::string _faction = "";
 	float _cost = 0.0;
 	damage_record total_damage;
 	std::vector<velocity_record_unit> velocity_record;
+	bool _position_changed = false;
 
 	const std::vector<std::string> valid_side_names = { "turret", "stern", "left", "front", "right", "bottom" };
 };

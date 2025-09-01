@@ -42,8 +42,17 @@ int tank::set_row(int row)
 	int status = INVALID_VALUE;
 	if (row >= 0)
 	{
-		last_row = _row;
+		if (_row != -1)
+		{
+			last_row = _row;
+		}
+		else
+		{
+			last_row = row;
+		}
+
 		_row = row;
+		_position_changed = true;
 		status = SUCCESS;
 	}
 
@@ -55,8 +64,17 @@ int tank::set_column(int column)
 	int status = INVALID_VALUE;
 	if (column >= 0)
 	{
-		last_column = column;
+		if (_column != -1)
+		{
+			last_column = _column;
+		}
+		else
+		{
+			last_column = column;
+		}
+
 		_column = column;
+		_position_changed = true;
 		status = SUCCESS;
 	}
 
@@ -322,7 +340,15 @@ int tank::set_turret_direction(int direction)
 	int status = INVALID_VALUE;
 	if (direction >= 1 && direction <= 6)
 	{
-		previous_turret_direction = tank_direction;
+		if (turret_direction != -1)
+		{
+			previous_turret_direction = turret_direction;
+		}
+		else
+		{
+			previous_turret_direction = direction;
+		}
+
 		turret_direction = direction;
 		status = SUCCESS;
 	}
@@ -335,7 +361,15 @@ int tank::set_tank_direction(int direction)
 	int status = INVALID_VALUE;
 	if (direction >= 1 && direction <= 6)
 	{
-		previous_tank_direction = tank_direction;
+		if (tank_direction != -1)
+		{
+			previous_tank_direction = tank_direction;
+		}
+		else
+		{
+			previous_tank_direction = direction;
+		}
+
 		tank_direction = direction;
 		status = SUCCESS;
 	}
@@ -380,6 +414,11 @@ int tank::apply_damage(const std::string& side, int column, const std::vector<we
 	}
 
 	return status;
+}
+
+void tank::acknowledge_position_changed()
+{
+	_position_changed = false;
 }
 
 int tank::get_id()
@@ -550,6 +589,11 @@ tank::damage_record tank::get_damage_record()
 std::vector<tank::velocity_record_unit> tank::get_velocity_record()
 {
 	return velocity_record;
+}
+
+bool tank::position_changed()
+{
+	return _position_changed;
 }
 
 void tank::apply_turret_damage(int column, const std::vector<weapons::damage_coordinate>& damage)

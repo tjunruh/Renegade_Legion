@@ -734,15 +734,34 @@ void display::update_tanks(std::vector<tank>& tanks)
 {
 	for (unsigned int i = 0; i < tanks.size(); i++)
 	{
-		board.deactivate_configuration(tanks[i].get_name() + " " + std::to_string(tanks[i].get_player()), tanks[i].get_previous_row(), tanks[i].get_previous_column());
+		if (tanks[i].position_changed())
+		{
+			board.deactivate_configuration(tanks[i].get_name() + " " + std::to_string(tanks[i].get_player()), tanks[i].get_previous_row(), tanks[i].get_previous_column());
+		}
+
 		if (tanks[i].get_previous_tank_direction() != tanks[i].get_previous_turret_direction())
 		{
-			board.deactivate_configuration(direction_to_tank_arrow(tanks[i].get_previous_tank_direction()), tanks[i].get_previous_row(), tanks[i].get_previous_column());
-			board.deactivate_configuration(direction_to_turret_arrow(tanks[i].get_previous_turret_direction()), tanks[i].get_previous_row(), tanks[i].get_previous_column());
+			if (tanks[i].position_changed())
+			{
+				board.deactivate_configuration(direction_to_tank_arrow(tanks[i].get_previous_tank_direction()), tanks[i].get_previous_row(), tanks[i].get_previous_column());
+				board.deactivate_configuration(direction_to_turret_arrow(tanks[i].get_previous_turret_direction()), tanks[i].get_previous_row(), tanks[i].get_previous_column());
+			}
+			else
+			{
+				board.deactivate_configuration(direction_to_tank_arrow(tanks[i].get_previous_tank_direction()), tanks[i].get_row(), tanks[i].get_column());
+				board.deactivate_configuration(direction_to_turret_arrow(tanks[i].get_previous_turret_direction()), tanks[i].get_row(), tanks[i].get_column());
+			}
 		}
 		else
 		{
-			board.deactivate_configuration(direction_to_both_arrow(tanks[i].get_previous_tank_direction()), tanks[i].get_previous_row(), tanks[i].get_previous_column());
+			if (tanks[i].position_changed())
+			{
+				board.deactivate_configuration(direction_to_both_arrow(tanks[i].get_previous_tank_direction()), tanks[i].get_previous_row(), tanks[i].get_previous_column());
+			}
+			else
+			{
+				board.deactivate_configuration(direction_to_both_arrow(tanks[i].get_previous_tank_direction()), tanks[i].get_row(), tanks[i].get_column());
+			}
 		}
 	}
 
@@ -758,7 +777,14 @@ void display::update_tanks(std::vector<tank>& tanks)
 		{
 			board.activate_configuration(direction_to_both_arrow(tanks[i].get_tank_direction()), tanks[i].get_row(), tanks[i].get_column());
 		}
+
+		if (tanks[i].position_changed())
+		{
+			tanks[i].acknowledge_position_changed();
+		}
 	}
+
+	board.build();
 }
 
 board_configuration display::build_damage_config(const std::string& name_id, const std::string& value, char ignore_character, const std::vector<format_tools::index_format>& colors)
